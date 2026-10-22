@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    @apply text-dark antialiased;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section-padding {
+    @apply py-8 md:py-16 lg:py-16;
+  }
+  
+  .gradient-overlay {
+    @apply absolute inset-0 bg-gradient-to-r from-black/60 to-transparent;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+}
+
+
+/* ===== Site color scheme =====
+   To change a color later, edit only the values below. */
+:root {
+  --brand-red: #CD2917;          /* main buttons, badges, highlighted text */
+  --brand-red-hover: #A82010;
+  --brand-orange: #D57C4B;       /* secondary buttons (e.g. header phone button) */
+  --brand-orange-hover: #B8653A;
+  --brand-teal: #05AEBF;         /* accents (e.g. header menu hover underline) */
+}
+
+/* Main buttons, badges and tags (was orange #F85E46) */
+.bg-\[\#F85E46\],
+.bg-primary {
+  background-color: var(--brand-teal) !important;
+}
+.hover\:bg-\[\#e54d36\]:hover,
+.hover\:bg-primary-dark:hover {
+  background-color: var(--brand-red-hover) !important;
+}
+
+/* Secondary buttons (was orange #DF6951) */
+.bg-\[\#DF6951\] {
+  background-color: var(--brand-orange) !important;
+}
+.hover\:bg-\[\#c85a43\]:hover {
+  background-color: var(--brand-orange-hover) !important;
+}
+
+/* Text colors */
+.text-\[\#F85E46\],
+.hover\:text-\[\#F85E46\]:hover {
+  color: var(--brand-red) !important;
+}
+.text-\[\#DF6951\],
+.hover\:text-\[\#DF6951\]:hover {
+  color: var(--brand-orange) !important;
+}
+
+/* Borders */
+.border-\[\#F85E46\] {
+  border-color: var(--brand-red) !important;
+}
+.border-\[\#DF6951\] {
+  border-color: var(--brand-orange) !important;
+}
+
+/* Header menu hover underline: teal shows up well on the dark header */
+header span.bg-\[\#DF6951\] {
+  background-color: var(--brand-teal) !important;
+}

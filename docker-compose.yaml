@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: travel-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - uploads_data:/app/public/uploads
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL}
+      # Add other environment variables here
+      # - MONGODB_URI=${MONGODB_URI}
+      # - NEXTAUTH_Tt=${NEXTAUTH_SECRET}
+
+volumes:
+  uploads_data:

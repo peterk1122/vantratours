@@ -1,0 +1,130 @@
+import React from 'react';
+import Image from 'next/image';
+
+interface RecentGalleryProps {
+  images?: string[];
+  alts?: string[];
+}
+
+const RecentGallery: React.FC<RecentGalleryProps> = ({ images, alts = [] }) => {
+  // Use provided images or fallback to default
+  const defaultImages = [
+    'https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=400&h=400&q=80',
+    'https://images.unsplash.com/photo-1544551763-46a42a457118?w=400&h=400&q=80',
+    'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&h=400&q=80',
+    'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=600&h=900&q=80',
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=400&q=80',
+    'https://images.unsplash.com/photo-1530789253388-582c481c54b0?w=400&h=400&q=80',
+    'https://images.unsplash.com/photo-1559825481-12a05cc00344?w=400&h=400&q=80',
+  ];
+
+  const displayImages = images && images.length > 0 ? images : defaultImages;
+
+  // Helper to safely get image URL (repeats if not enough images)
+  const getImg = (index: number) => displayImages[index % displayImages.length];
+  // Helper to get alt text with fallback
+  const getAlt = (index: number) => alts[index % displayImages.length] || `Gallery image ${index + 1}`;
+
+  return (
+    <section className="w-full py-8 md:py-12">
+      <h2 className="text-3xl md:text-[40px] font-bold text-center text-[#183B56] mb-8 md:mb-12 font-serif">
+        Recent Gallery
+      </h2>
+      
+      {/* Desktop View - Hidden on Mobile */}
+      <div className="hidden lg:flex justify-center items-center gap-4 px-4 h-[500px]">
+        {/* Column 1 - Single Image */}
+        <div className="flex items-center h-full">
+            <div className="relative w-[150px] h-[150px] xl:w-[200px] xl:h-[200px] rounded-3xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                <Image 
+                    src={getImg(0)} 
+                    alt={getAlt(0)} 
+                    fill 
+                    className="object-cover"
+                />
+            </div>
+        </div>
+
+        {/* Column 2 - Stacked Images */}
+        <div className="flex flex-col gap-4 h-[80%] justify-center">
+             <div className="relative w-[160px] h-[130px] xl:w-[220px] xl:h-[180px] rounded-3xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                <Image 
+                    src={getImg(1)} 
+                    alt={getAlt(1)} 
+                    fill 
+                    className="object-cover"
+                />
+            </div>
+             <div className="relative w-[160px] h-[130px] xl:w-[220px] xl:h-[180px] rounded-3xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                <Image 
+                    src={getImg(2)} 
+                    alt={getAlt(2)} 
+                    fill 
+                    className="object-cover"
+                />
+            </div>
+        </div>
+
+        {/* Column 3 - Center Tall Image */}
+        <div className="flex items-center h-full">
+            <div className="relative w-[200px] h-[350px] xl:w-[280px] xl:h-[450px] rounded-[3rem] overflow-hidden shadow-xl z-10 hover:scale-105 transition-transform duration-300">
+                <Image 
+                    src={getImg(3)} 
+                    alt={getAlt(3)} 
+                    fill 
+                    className="object-cover"
+                />
+            </div>
+        </div>
+
+        {/* Column 4 - Stacked Images */}
+        <div className="flex flex-col gap-4 h-[80%] justify-center">
+             <div className="relative w-[160px] h-[130px] xl:w-[220px] xl:h-[180px] rounded-3xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                <Image 
+                    src={getImg(4)} 
+                    alt={getAlt(4)} 
+                    fill 
+                    className="object-cover"
+                />
+            </div>
+             <div className="relative w-[160px] h-[130px] xl:w-[220px] xl:h-[180px] rounded-3xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                <Image 
+                    src={getImg(5)} 
+                    alt={getAlt(5)} 
+                    fill 
+                    className="object-cover"
+                />
+            </div>
+        </div>
+
+        {/* Column 5 - Single Image */}
+        <div className="flex items-center h-full">
+            <div className="relative w-[150px] h-[150px] xl:w-[200px] xl:h-[200px] rounded-3xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                <Image 
+                    src={getImg(6)} 
+                    alt={getAlt(6)} 
+                    fill 
+                    className="object-cover"
+                />
+            </div>
+        </div>
+      </div>
+
+      {/* Mobile View - Horizontal Scroll */}
+      <div className="lg:hidden flex gap-4 overflow-x-auto px-4 pb-4 scrollbar-hide snap-x">
+          {displayImages.map((img, idx) => (
+              <div key={idx} className="relative flex-shrink-0 w-[280px] h-[350px] rounded-3xl overflow-hidden shadow-lg snap-center">
+                  <Image 
+                      src={img} 
+                      alt={getAlt(idx)} 
+                      fill 
+                      className="object-cover"
+                  />
+              </div>
+          ))}
+      </div>
+    </section>
+  );
+};
+
+export default RecentGallery;

@@ -1,0 +1,64 @@
+# llms.txt 
+# https://desertsmarttourism.com
+
+site_name: Desert Smart Tourism
+site_url: https://desertsmarttourism.com
+site_type: travel and tourism services
+
+description:
+Desert Smart Tourism is a UAE-based travel company offering Dubai desert safari tours, city sightseeing tours, luxury yacht cruises, theme park tickets, and adventure experiences across Dubai, Abu Dhabi, and Ras Al Khaimah.
+
+primary_services:
+- Dubai Desert Safari Tours
+- Dubai City Tours
+- Abu Dhabi City Tours
+- Ras Al Khaimah Tours
+- Luxury Yacht Cruises Dubai
+- Theme Parks & Attractions Tickets
+- Adventure Tours in the UAE
+
+service_locations:
+- Dubai
+- Abu Dhabi
+- Ras Al Khaimah
+- United Arab Emirates
+
+main_pages:
+https://desertsmarttourism.com/
+https://desertsmarttourism.com/city-tours-sightseeing
+https://desertsmarttourism.com/attractions-theme-parks
+https://desertsmarttourism.com/cruises-luxury-experiences
+https://desertsmarttourism.com/desert-safaris-adventures
+
+tour_pages:
+https://desertsmarttourism.com/tour-details/dubai-city-tour
+https://desertsmarttourism.com/tour-details/abu-dhabi-city-tour
+https://desertsmarttourism.com/tour-details/city-tour-ras-al-khaimah
+https://desertsmarttourism.com/tour-details/dubai-yacht-tour
+https://desertsmarttourism.com/tour-details/dhow-cruise-with-dinner
+https://desertsmarttourism.com/tour-details/Carnival-cruise-Dubai-booking
+
+content_topics:
+- desert safari tours
+- city sightseeing tours
+- yacht cruises
+- theme parks and attractions
+- luxury travel experiences
+- adventure tourism
+
+content_types:
+- tour packages
+- travel guides
+- attraction information
+- cruise experiences
+- adventure activities
+
+brand:
+name: Desert Smart Tourism
+website: https://desertsmarttourism.com
+
+sitemap:
+https://desertsmarttourism.com/sitemap_index.xml
+
+contact:
+website: https://desertsmarttourism.com
