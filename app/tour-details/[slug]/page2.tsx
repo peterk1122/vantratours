@@ -1,0 +1,423 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import TourOptionCard from '../components/TourOptionCard';
+import CalendarWidget from '../components/CalendarWidget';
+import FeatureCard from '../components/FeatureCard';
+import Image from 'next/image';
+import TourGallery from '@/components/sections/TourGallery';
+import ReviewsSection from '@/components/sections/ReviewsSection';
+
+import { useParams, useRouter } from 'next/navigation';
+import BookingModal from '../components/BookingModal';
+import { useCart } from '@/context/CartContext';
+
+export default function CityTourPage() {
+  const params = useParams();
+  const slug = params?.slug as string;
+  
+  
+  const [showOptions, setShowOptions] = useState(false);
+  const [packageData, setPackageData] = useState<any>(null); // Use a proper interface ideally
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  // Booking Modal State
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [bookingDetails, setBookingDetails] = useState<any>(null);
+
+  
+  // Default static data (fallback)
+  const defaultData = {
+    title: 'City Tour',
+    gallery: [], // Will use default in component
+    description: "Discover Moscow Onboard The Mercedes Van Or Our Classic Soviet Van...",
+    highlights: `<ul>
+        <li>Water, beers and champagne onboard</li>
+        <li>7 stops at Moscow's key sights</li>
+        <li>A peaceful morning or a dazzling evening tour</li>
+        <li>The best tour to explore Moscow in a fun way!</li>
+    </ul>`,
+    includes: `<ul>
+        <li>Transfer onboard our classic Soviet Van</li>
+        <li>Knowledgeable and fun English or Arabic speaking guide</li>
+        <li>Teleferic (Cable car) across the Moscow river</li>
+    </ul>`,
+    features: [
+        { icon: '🎭', title: 'Experience Duration:', description: '1 to 4 hours' },
+        { icon: '🚗', title: 'Transportation:', description: 'With Pickup and Drop-off' },
+        { icon: '💰', title: 'Price Range:', description: 'Moderate Pricing' }
+    ],
+    tourOptions: [
+        { 
+          title: 'City Tour (Group)', 
+          duration: '4 Hours', 
+          active: true,
+          adultPrice: 253.50,
+          childPrice: 177.45,
+          infantPrice: 0,
+          features: []
+        }
+    ]
+  };
+
+  useEffect(() => {
+    if (slug) {
+        const fetchPackage = async () => {
+            try {
+                const res = await fetch(`https://desertsmarttourism.com/api/packages?slug=${slug}`);
+                const json = await res.json();
+                if (json.success && json.data && json.data.length > 0) {
+                     setPackageData(json.data[0]); // API returns array
+                }
+            } catch (err) {
+                console.error("Failed to fetch package", err);
+            }
+        };
+        fetchPackage();
+    }
+  }, [slug]);
+
+  const activeData = packageData || defaultData;
+  const isDynamic = !!packageData;
+
+  const optionsRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (showOptions && optionsRef.current) {
+      optionsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [showOptions, selectedDate]);
+
+  const handleDateSelect = (date: Date) => {
+    setSelectedDate(date);
+    setShowOptions(true);
+    // Future: API call for date-specific availability
+    // fetchAvailability(date);
+  };
+
+  const { addToCart } = useCart();
+  const router = useRouter();
+
+  const handleBookNow = (option: any, guestDetails: any) => {
+    const itemToAdd = {
+      title: activeData.title,
+      packageId: activeData._id || '000000000000000000000000', // valid length hex if missing strictly needed, or handle in API
+      slug: slug || 'custom-package',
+      image: activeData.image,
+      optionTitle: option.title,
+      date: selectedDate || new Date(),
+      pricingType: option.pricingType || 'person',
+      
+      guests: guestDetails.guests || 0,
+      items: guestDetails.items || 0,
+      adults: guestDetails.adults || 0,
+      children: guestDetails.children || 0,
+      infants: guestDetails.infants || 0,
+      
+      timeSlot: guestDetails.timeSlot,
+      pickupLocation: guestDetails.pickupLocation,
+      transferType: guestDetails.transferType,
+      extraServices: guestDetails.extraServices || [],
+      
+      totalPrice: Number(guestDetails.totalPrice)
+    };
+
+    addToCart(itemToAdd);
+
+    if (guestDetails.action === 'book_now') {
+      router.push('/cart');
+    } else {
+      alert('Added to cart successfully!');
+    }
+  };
+
+
+  // Use dynamic options if available, otherwise default
+  const tourOptions = isDynamic && activeData.tourOptions.length > 0 ? activeData.tourOptions : [
+    {
+      title: 'City Tour (Group)',
+      duration: activeData.duration || '4 Hours',
+      features: [
+        { icon: 'car', label: 'Pickup Included' },
+        { icon: 'bus', label: 'Drop Off Included' },
+        { icon: 'guide', label: 'Tour Guide' },
+      ],
+      penalty: 'Less Than 1 Days Before Start Of The Experience: 100% Penalty',
+      timeSlots: [],
+      pricePerPerson: activeData.price || 253.50,
+      adultPrice: activeData.price || 253.50,
+      childPrice: (activeData.price ? activeData.price * 0.7 : 177.45),
+      infantPrice: 0,
+      currency: 'AED',
+    },
+    {
+      title: 'Extended City Tour',
+      duration: '6 Hours',
+      features: [
+        { icon: 'car', label: 'Private Transport' },
+        { icon: 'guide', label: 'Best Tour Guide' },
+      ],
+      penalty: 'Less Than 2 Days Before Start Of The Experience: 50% Penalty',
+      timeSlots: [],
+      pricePerPerson: (activeData.price ? activeData.price * 1.5 : 450.00),
+      adultPrice: (activeData.price ? activeData.price * 1.5 : 450.00),
+      childPrice: 350.00,
+      infantPrice: 0,
+      currency: 'AED',
+    },
+    {
+      title: 'City Tour Premium',
+      duration: '8 Hours',
+      features: [
+        { icon: 'car', label: 'Luxury Transport' },
+        { icon: 'bus', label: 'Drop Off Included' },
+        { icon: 'guide', label: 'Private Guide' },
+      ],
+      penalty: 'Less Than 3 Days Before Start Of The Experience: 25% Penalty',
+      timeSlots: [],
+      pricePerPerson: (activeData.price ? activeData.price * 2 : 600.00),
+      adultPrice: (activeData.price ? activeData.price * 2 : 600.00),
+      childPrice: 450.00,
+      infantPrice: 0,
+      currency: 'AED',
+    },
+  ];
+
+  const features = activeData.features && activeData.features.length > 0 ? activeData.features : [
+    {
+      icon: '🎭',
+      title: 'Experience Duration:',
+      description: activeData.duration || '1 to 4 hours',
+    },
+    {
+      icon: '🚗',
+      title: 'Transportation:',
+      description: 'With Pickup and Drop-off',
+    },
+    {
+      icon: '💬',
+      title: 'Available Languages:',
+      description: 'English, Spanish, French, German, Chinese, Arabic',
+    },
+    {
+      icon: '💰',
+      title: 'Price Range:',
+      description: 'Moderate Pricing, Premium Experiences',
+    },
+    {
+      icon: '🎉',
+      title: 'Great For:',
+      description: 'Birthdays, Anniversaries, Family Outings, Corporate Events, Retirement',
+    },
+    {
+      icon: '⏰',
+      title: 'Best Time to Visit:',
+      description: 'Morning, Afternoon, Evening and night',
+    },
+    {
+      icon: '👫',
+      title: 'Perfect For:',
+      description: 'Couples, Families, Friends, Seniors, Employee Teams, Him, Her',
+    },
+  ];
+
+  // Helper to safely render HTML or list
+  const getHtmlContent = (content: any) => {
+      if (typeof content === 'string') return content;
+      if (Array.isArray(content)) return content.map(item => `<li>${item}</li>`).join('');
+      return '';
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      <Header color="bg-[#181E4B]" />
+
+      {/* Spacer: the header is absolutely positioned, so this keeps the content below it */}
+      <div className="h-[140px]"></div>
+
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto px-4 py-10">
+
+        <h1 className="text-2xl md:text-[32px] font-bold text-[#181E4B] mb-5">
+          {activeData.title}
+        </h1>
+
+        <TourGallery images={activeData.gallery} alts={activeData.galleryAlts} />
+
+          <div className="flex flex-col lg:flex-row gap-8 md:mt-8">
+            {/* Left - Tour Options & Content */}
+            <div className="w-full lg:w-[70%]">
+              
+              {/* Mobile Calendar (Initial Position) - Visible when no date selected or always on mobile? 
+                  User wants it "below heading". 
+                  If showOptions is false: Heading is hidden -> Calendar is top.
+                  If showOptions is true: Heading is visible -> Calendar is below it.
+              */}
+              {showOptions && (
+                 <h2 ref={optionsRef} className="text-3xl md:text-[40px] font-bold text-center text-[#183B56] mb-8 md:mb-12 font-serif">
+                    Choose your option
+                 </h2>
+              )}
+
+              {/* Mobile Calendar Widget - Hidden on Desktop */}
+              <div className="lg:hidden mb-8">
+                 <CalendarWidget 
+                    pricePerPerson={activeData.price} 
+                    onDateSelect={handleDateSelect} 
+                 />
+              </div>
+
+              {showOptions && (
+                <>
+                  {tourOptions.map((option: any, index: number) => (
+                    <TourOptionCard
+                      key={index}
+                      {...option}
+                      isExpanded={index === 0}
+                      selectedDate={selectedDate || undefined}
+                      onBookNow={(details) => handleBookNow(option, details)}
+                    />
+                  ))}
+                </>
+              )}
+
+              {/* About This Activity */}
+              <section className="mt-16">
+                <h2 className="text-xl md:text-2xl font-bold text-[#1E3A5F] mb-4">
+                  About This Activity
+                </h2>
+                <p className="text-base md:text-[20px] text-[#000000] leading-relaxed mb-8">
+                  {activeData.description}
+                </p>
+
+                {/* Feature Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {features.map((feature: any, index: number) => (
+                    <FeatureCard
+                      key={index}
+                      icon={feature.icon}
+                      title={feature.title}
+                      description={feature.description}
+                    />
+                  ))}
+                </div>
+              </section>
+
+              {/* Horizontal Separator */}
+              <hr className="mt-14 border-t border-[#000000]" />
+
+            {/* Itinerary Section */}
+            {activeData.itinerary && (
+              <section className="mt-8">
+                <h3 className="text-xl md:text-2xl font-bold text-[#1E3A5F] mb-4">Itinerary</h3>
+                {Array.isArray(activeData.itinerary) && activeData.itinerary.length > 0 ? (
+                  // Legacy Array Format
+                  <div className="space-y-6">
+                    {activeData.itinerary.map((item: any, idx: number) => (
+                      <div key={idx} className="flex gap-4">
+                        {/* Day Circle */}
+                        <div className="flex flex-col items-center">
+                           <div className="w-10 h-10 rounded-full bg-[#F85E46] text-white flex items-center justify-center font-bold text-sm shrink-0">
+                             {item.day || idx + 1}
+                           </div>
+                           {idx < activeData.itinerary.length - 1 && (
+                             <div className="w-0.5 h-full bg-gray-200 my-2"></div>
+                           )}
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="pb-6 w-full">
+                           <h4 className="text-[18px] md:text-[20px] font-bold text-[#181E4B] mb-2 break-words">{item.title}</h4>
+                           <p className="text-[16px] md:text-[18px] text-[#000000] leading-relaxed whitespace-pre-line break-words">
+                             {item.description}
+                           </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  // New HTML String Format
+                  <div 
+                    className="text-[16px] md:text-[20px] text-[#000000] space-y-2 [&>ul]:list-disc [&>ul]:list-inside break-words"
+                    dangerouslySetInnerHTML={{ __html: getHtmlContent(activeData.itinerary) }}
+                  />
+                )}
+                <hr className="mt-8 border-t border-[#000000]" />
+              </section>
+            )}
+
+            {/* Highlights Section */}
+            <section className="mt-8">
+              <h3 className="text-xl md:text-2xl font-bold text-[#1E3A5F] mb-4">Highlights</h3>
+              <div 
+                className="text-base md:text-[20px] text-[#000000] space-y-2 [&>ul]:list-disc [&>ul]:list-inside break-words"
+                dangerouslySetInnerHTML={{ __html: getHtmlContent(activeData.highlights) }}
+              />
+            </section>
+
+            {/* Horizontal Separator */}
+            <hr className="mt-10 border-t border-[#000000]" />
+
+            {/* Includes Section */}
+            <section className="mt-8">
+              <h3 className="text-xl md:text-2xl font-bold text-[#1E3A5F] mb-4">Includes</h3>
+              <div 
+                className="text-base md:text-[20px] text-[#000000] space-y-2 [&>ul]:list-disc [&>ul]:list-inside break-words"
+                dangerouslySetInnerHTML={{ __html: getHtmlContent(activeData.includes) }}
+              />
+            </section>
+
+              {/* Horizontal Separator */}
+              <hr className="mt-10 border-t border-[#000000]" />
+
+              {/* Details Section */}
+              <section className="mt-8 mb-8">
+                <h3 className="text-xl md:text-2xl font-bold text-[#1E3A5F] mb-4">Details</h3>
+                <p className="text-base md:text-[20px] text-[#000000] leading-relaxed break-words">
+                   {activeData.description}
+                </p>
+              </section>
+
+              {isDynamic && activeData._id && (
+                  <>
+                    <hr className="mt-10 border-t border-[#000000]" />
+                    <ReviewsSection packageId={activeData._id} />
+                  </>
+              )}
+            </div>
+
+            {/* Right - Calendar & Decoration (Desktop Only) */}
+            <div className="w-full lg:w-[30%] hidden lg:block">
+              <CalendarWidget 
+                pricePerPerson={activeData.price} 
+                onDateSelect={handleDateSelect} 
+              />
+              
+              {/* Travel Decoration Image */}
+              <div className="relative hidden md:block h-72 mt-4">
+                <Image
+                  src={activeData.image?.startsWith('/api/') ? `https://desertsmarttourism.com${activeData.image}` : (activeData.image || "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800")}
+                  alt={activeData.imageAlt || activeData.title || 'Travel decoration'}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+          </div>
+      </main>
+
+      <Footer />
+      
+      {/* Booking Modal */}
+      {bookingDetails && (
+        <BookingModal 
+          isOpen={isBookingOpen}
+          onClose={() => setIsBookingOpen(false)}
+          bookingDetails={bookingDetails}
+        />
+      )}
+    </div>
+  );
+}
