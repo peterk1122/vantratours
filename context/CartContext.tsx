@@ -13,6 +13,8 @@ export interface CartItem {
   optionTitle: string;
   timeSlot?: string;
   pickupLocation?: string;
+  transferType?: string;
+  extraServices?: string[];
   date: Date;
   
   // Pricing & Guests
