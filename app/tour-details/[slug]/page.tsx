@@ -430,7 +430,7 @@ export default function TourDetailsPage() {
       image: pkg.image,
       optionTitle: o.title,
       date: fromISO(date),
-      pricingType: o.pricingType,
+      pricingType: o.pricingType as "person" | "group",
       guests: isPerson ? 0 : adults + children,
       items: isPerson ? 0 : adults + children,
       adults,
