@@ -38,7 +38,7 @@ interface OptionView {
   features: { icon?: string; label: string }[];
   penalty?: string;
   times: string[];
-  pricingType: string;
+  pricingType: 'person' | 'group';
   adult: number;
   child: number;
   infant: number;
@@ -117,7 +117,7 @@ function normaliseOption(o: any, i: number, fallbackPrice: number): OptionView {
       : [],
     penalty: o.penalty,
     times: Array.isArray(o.timeSlots) ? o.timeSlots.map(slotLabel).filter(Boolean) : [],
-    pricingType: o.pricingType || 'person',
+    pricingType: o.pricingType === 'group' ? 'group' : 'person',
     adult,
     child: Number(o.childPrice ?? adult),
     infant: Number(o.infantPrice ?? 0),
