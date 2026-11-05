@@ -284,7 +284,57 @@ function Calendar({
 /* ------------------------------------------------------------------ */
 /* Page                                                                */
 /* ------------------------------------------------------------------ */
+function OptionsCarousel({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
 
+  const update = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    update();
+    const el = ref.current;
+    el?.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      el?.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, [update, children]);
+
+  const scrollPage = (dir: 1 | -1) => {
+    const el = ref.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth, behavior: 'smooth' });
+  };
+
+  const arrow =
+    'absolute top-1/2 -translate-y-1/2 z-10 h-9 w-9 rounded-full bg-white shadow-md border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50';
+
+  return (
+    <div className="relative">
+      <div
+        ref={ref}
+        className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {React.Children.map(children, (child) => (
+          <div className="flex shrink-0 snap-start basis-full md:basis-[calc((100%-1rem)/2)]">{child}</div>
+        ))}
+      </div>
+      {canPrev && (
+        <button type="button" aria-label="Previous options" onClick={() => scrollPage(-1)} className={`${arrow} -left-3`}>‹</button>
+      )}
+      {canNext && (
+        <button type="button" aria-label="Next options" onClick={() => scrollPage(1)} className={`${arrow} -right-3`}>›</button>
+      )}
+    </div>
+  );
+}
 export default function TourDetailsPage() {
   const params = useParams();
   const slug = params?.slug as string;
@@ -692,127 +742,127 @@ export default function TourDetailsPage() {
               )}
 
               {availability === 'available' && (
-                <div ref={optionsRef} className="scroll-mt-28">
-                  <h2 className="text-lg font-bold mb-4">
-                    Choose from {options.length} available option{options.length > 1 ? 's' : ''}
-                  </h2>
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    {options.map((o, i) => {
-                      const active = i === selectedOption;
-                      const time = selectedTime[i] || o.times[0];
-                      const total = totalFor(o);
-                      const isPerson = o.pricingType === 'person';
-                      return (
-                        <div
-                          key={o.key}
-                          onClick={() => setSelectedOption(i)}
-                          className="rounded-xl border-2 p-4 flex flex-col cursor-pointer transition-colors bg-white"
-                          style={{ borderColor: active ? BLUE : '#e5e7eb' }}
-                        >
-                          <div className="flex items-start justify-between gap-3">
-                            <h3 className="font-bold text-sm leading-snug">{o.title}</h3>
-                            <span
-                              className="w-5 h-5 rounded-full border flex items-center justify-center shrink-0 text-white"
-                              style={active ? { backgroundColor: GOLD, borderColor: GOLD } : { borderColor: '#d1d5db' }}
-                            >
-                              {active && <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
-                            </span>
-                          </div>
+  <div ref={optionsRef} className="scroll-mt-28">
+    <h2 className="text-lg font-bold mb-4">
+      Choose from {options.length} available option{options.length > 1 ? 's' : ''}
+    </h2>
+    <OptionsCarousel>
+      {options.map((o, i) => {
+        const active = i === selectedOption;
+        const time = selectedTime[i] || o.times[0];
+        const total = totalFor(o);
+        const isPerson = o.pricingType === 'person';
+        return (
+          <div
+            key={o.key}
+            onClick={() => setSelectedOption(i)}
+            className="w-full rounded-xl border-2 p-4 flex flex-col cursor-pointer transition-colors bg-white"
+            style={{ borderColor: active ? BLUE : '#e5e7eb' }}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="font-bold text-sm leading-snug">{o.title}</h3>
+              <span
+                className="w-5 h-5 rounded-full border flex items-center justify-center shrink-0 text-white"
+                style={active ? { backgroundColor: GOLD, borderColor: GOLD } : { borderColor: '#d1d5db' }}
+              >
+                {active && <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
+              </span>
+            </div>
 
-                          {o.description && <p className="text-xs text-gray-600 mt-3 leading-relaxed">{o.description}</p>}
+            {o.description && <p className="text-xs text-gray-600 mt-3 leading-relaxed">{o.description}</p>}
 
-                          <ul className="mt-4 space-y-2 text-xs text-gray-700">
-                            {o.duration && (
-                              <li className="flex items-center gap-2"><Icon name="clock" className="w-4 h-4" /> Duration: {o.duration}</li>
-                            )}
-                            {o.features.map((f) => (
-                              <li key={f.label} className="flex items-center gap-2"><Icon name={f.icon} className="w-4 h-4" /> {f.label}</li>
-                            ))}
-                            {o.penalty && (
-                              <li className="flex items-start gap-2"><Icon name="cancel" className="w-4 h-4 shrink-0 mt-0.5" /> {o.penalty}</li>
-                            )}
-                          </ul>
-
-                          {o.times.length > 0 && (
-                            <div className="mt-5">
-                              <p className="text-xs font-semibold">Select a starting time</p>
-                              <p className="text-xs text-gray-500 mt-1">{longDate(date)}</p>
-                              <div className="flex gap-2 mt-2 flex-wrap">
-                                {o.times.map((t) => (
-                                  <button
-                                    key={t}
-                                    type="button"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSelectedOption(i);
-                                      setSelectedTime((s) => ({ ...s, [i]: t }));
-                                    }}
-                                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${time === t ? 'text-white' : 'border-gray-300 text-gray-800 hover:border-gray-500'}`}
-                                    style={time === t ? { backgroundColor: GOLD, borderColor: GOLD } : undefined}
-                                  >
-                                    {t}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-
-                          {active && (
-                            <input
-                              type="text"
-                              value={pickup[i] || ''}
-                              onClick={(e) => e.stopPropagation()}
-                              onChange={(e) => setPickup((s) => ({ ...s, [i]: e.target.value }))}
-                              placeholder="Pickup location (hotel name, optional)"
-                              className="mt-4 w-full border border-gray-300 rounded-lg px-3 py-2 text-xs outline-none focus:border-gray-500"
-                            />
-                          )}
-
-                          <div className="mt-auto pt-5">
-                            <span className="text-xl font-bold">{o.currency} {money(total)}</span>
-                            <div className="text-[11px] text-gray-500 mt-1 leading-relaxed">
-                              {isPerson ? (
-                                <>
-                                  <p>{adults} Adult × {money(o.adult)}</p>
-                                  {children > 0 && <p>{children} Child × {money(o.child)}</p>}
-                                  {infants > 0 && <p>{infants} Infant × {money(o.infant)}</p>}
-                                </>
-                              ) : (
-                                <p>{Math.max(1, adults + children)} × {money(o.unit)}</p>
-                              )}
-                            </div>
-                            <p className="text-[11px] text-gray-400">All taxes and fees included</p>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedOption(i);
-                                handleContinue(i);
-                              }}
-                              className={`mt-3 w-full py-2.5 rounded-full text-sm font-bold transition ${active ? 'text-white hover:opacity-90' : 'border bg-white'}`}
-                              style={active ? { backgroundColor: GOLD } : { borderColor: GOLD, color: GOLD_DARK }}
-                              onMouseEnter={(e) => {
-                                if (!active) {
-                                  e.currentTarget.style.backgroundColor = GOLD;
-                                  e.currentTarget.style.color = '#fff';
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (!active) {
-                                  e.currentTarget.style.backgroundColor = '';
-                                  e.currentTarget.style.color = GOLD_DARK;
-                                }
-                              }}
-                            >
-                              {active ? 'Continue' : 'Select'}
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
+            <ul className="mt-4 space-y-2 text-xs text-gray-700">
+              {o.duration && (
+                <li className="flex items-center gap-2"><Icon name="clock" className="w-4 h-4" /> Duration: {o.duration}</li>
               )}
+              {o.features.map((f) => (
+                <li key={f.label} className="flex items-center gap-2"><Icon name={f.icon} className="w-4 h-4" /> {f.label}</li>
+              ))}
+              {o.penalty && (
+                <li className="flex items-start gap-2"><Icon name="cancel" className="w-4 h-4 shrink-0 mt-0.5" /> {o.penalty}</li>
+              )}
+            </ul>
+
+            {o.times.length > 0 && (
+              <div className="mt-5">
+                <p className="text-xs font-semibold">Select a starting time</p>
+                <p className="text-xs text-gray-500 mt-1">{longDate(date)}</p>
+                <div className="flex gap-2 mt-2 flex-wrap">
+                  {o.times.map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedOption(i);
+                        setSelectedTime((s) => ({ ...s, [i]: t }));
+                      }}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${time === t ? 'text-white' : 'border-gray-300 text-gray-800 hover:border-gray-500'}`}
+                      style={time === t ? { backgroundColor: GOLD, borderColor: GOLD } : undefined}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {active && (
+              <input
+                type="text"
+                value={pickup[i] || ''}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => setPickup((s) => ({ ...s, [i]: e.target.value }))}
+                placeholder="Pickup location (hotel name, optional)"
+                className="mt-4 w-full border border-gray-300 rounded-lg px-3 py-2 text-xs outline-none focus:border-gray-500"
+              />
+            )}
+
+            <div className="mt-auto pt-5">
+              <span className="text-xl font-bold">{o.currency} {money(total)}</span>
+              <div className="text-[11px] text-gray-500 mt-1 leading-relaxed">
+                {isPerson ? (
+                  <>
+                    <p>{adults} Adult × {money(o.adult)}</p>
+                    {children > 0 && <p>{children} Child × {money(o.child)}</p>}
+                    {infants > 0 && <p>{infants} Infant × {money(o.infant)}</p>}
+                  </>
+                ) : (
+                  <p>{Math.max(1, adults + children)} × {money(o.unit)}</p>
+                )}
+              </div>
+              <p className="text-[11px] text-gray-400">All taxes and fees included</p>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelectedOption(i);
+                  handleContinue(i);
+                }}
+                className={`mt-3 w-full py-2.5 rounded-full text-sm font-bold transition ${active ? 'text-white hover:opacity-90' : 'border bg-white'}`}
+                style={active ? { backgroundColor: GOLD } : { borderColor: GOLD, color: GOLD_DARK }}
+                onMouseEnter={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.backgroundColor = GOLD;
+                    e.currentTarget.style.color = '#fff';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!active) {
+                    e.currentTarget.style.backgroundColor = '';
+                    e.currentTarget.style.color = GOLD_DARK;
+                  }
+                }}
+              >
+                {active ? 'Continue' : 'Select'}
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </OptionsCarousel>
+  </div>
+)}
 
               {intro && <p className="mt-8 text-sm text-gray-700 leading-relaxed">{intro}</p>}
 
