@@ -1,40 +1,93 @@
-import React from 'react';
+'use client';
 
-const items = [
-  {
-    title: 'Experiences worth traveling for',
-    text: 'Discover iconic sights and experience places the way locals do.',
-    path: 'M21 21l-4.3-4.3M11 18a7 7 0 100-14 7 7 0 000 14z',
-  },
-  {
-    title: 'Book with confidence',
-    text: 'Trusted reviews, quality tours, and all the details you need to decide.',
-    path: 'M12 3l2.7 5.5 6 .9-4.4 4.2 1 6-5.3-2.8-5.3 2.8 1-6L3.3 9.4l6-.9L12 3z',
-  },
-  {
-    title: 'Plans change and that’s ok',
-    text: 'Breathe easy with free cancellations on most activities, the option to pay later, and 24/7 support.',
-    path: 'M4 12a8 8 0 0113.7-5.7L20 8M20 4v4h-4M20 12a8 8 0 01-13.7 5.7L4 16M4 20v-4h4',
-  },
-];
+import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { API_BASE, imgUrl } from '@/lib/api';
 
-const WhyBookSection: React.FC = () => (
-  <section className="max-w-6xl mx-auto px-4 py-8 pb-14">
-    <h2 className="text-xl font-bold text-[#1B2A41] mb-4">Why book with us?</h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-      {items.map((i) => (
-        <div key={i.title} className="border border-[#E3E8EC] rounded-lg p-6 text-center">
-          <div className="w-14 h-14 mx-auto rounded-full bg-[#EEF4FB] text-[#1B2A41] flex items-center justify-center">
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d={i.path} />
-            </svg>
-          </div>
-          <h3 className="mt-4 font-semibold text-[#1B2A41]">{i.title}</h3>
-          <p className="mt-1 text-sm text-gray-500">{i.text}</p>
+interface Item {
+  _id?: string;
+  image?: string;
+  title: string;
+  description: string;
+}
+
+const GAP = 20;
+
+const WhyBookSection: React.FC = () => {
+  const [heading, setHeading] = useState('');
+  const [items, setItems] = useState<Item[]>([]);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch(`${API_BASE}/api/why-book`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.success && d.data) {
+          setHeading(d.data.heading || '');
+          setItems(Array.isArray(d.data.items) ? d.data.items : []);
+        }
+      })
+      .catch((e) => console.error(e));
+  }, []);
+
+  if (items.length === 0) return null;
+
+  const needsArrows = items.length > 3;
+
+  const scroll = (dir: 1 | -1) => {
+    const el = ref.current;
+    if (!el || !el.firstElementChild) return;
+    const step = (el.firstElementChild as HTMLElement).offsetWidth + GAP;
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  };
+
+  return (
+    <section className="max-w-6xl mx-auto px-4 py-8 pb-14">
+      {heading && <h2 className="text-xl font-bold text-[#1B2A41] mb-4">{heading}</h2>}
+      <div className="relative">
+        <div
+          ref={ref}
+          className="flex gap-5 overflow-x-auto snap-x snap-mandatory [scrollbar-width:none] items-stretch"
+        >
+          {items.map((item, i) => (
+            <div
+              key={item._id || i}
+              className="snap-start shrink-0 w-full md:w-[calc((100%-40px)/3)] border border-[#E3E8EC] rounded-lg p-6 text-center bg-white"
+            >
+              {item.image && (
+                <div className="relative w-20 h-20 mx-auto">
+                  <Image src={imgUrl(item.image)} alt={item.title} fill unoptimized className="object-contain" />
+                </div>
+              )}
+              <h3 className="mt-4 font-semibold text-[#1B2A41]">{item.title}</h3>
+              <p className="mt-1 text-sm text-gray-500">{item.description}</p>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </section>
-);
+
+        {needsArrows && (
+          <>
+            <button
+              type="button"
+              aria-label="Previous"
+              onClick={() => scroll(-1)}
+              className="absolute left-[-14px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-green-500 text-green-600 flex items-center justify-center shadow"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              aria-label="Next"
+              onClick={() => scroll(1)}
+              className="absolute right-[-14px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white border border-green-500 text-green-600 flex items-center justify-center shadow"
+            >
+              ›
+            </button>
+          </>
+        )}
+      </div>
+    </section>
+  );
+};
 
 export default WhyBookSection;
