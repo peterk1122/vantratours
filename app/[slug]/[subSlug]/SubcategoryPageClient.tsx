@@ -35,7 +35,7 @@ export default function SubcategoryPageClient({
       setLoading(true);
       try {
         if (!subcategoryId) return;
-        const packagesData = await fetch(`https://desertsmarttourism.com/api/packages?subcategory=${subcategoryId}`).then(res => res.json());
+        const packagesData = await fetch(`https://vantratours-swart.vercel.app/api/packages?subcategory=${subcategoryId}`).then(res => res.json());
         if (packagesData.success) {
           setPackages(packagesData.data.map((pkg: any) => ({
             id: pkg._id,
@@ -67,7 +67,7 @@ export default function SubcategoryPageClient({
     const fetchChildren = async () => {
       try {
         if (!subcategoryId) return;
-        const res = await fetch(`https://desertsmarttourism.com/api/subcategories?category=${categorySlug}&parent=${subcategoryId}`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories?category=${categorySlug}&parent=${subcategoryId}`);
         const json = await res.json();
         if (json.success) setChildSubcategories(json.data);
       } catch (error) {

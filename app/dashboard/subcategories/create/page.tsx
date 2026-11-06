@@ -54,7 +54,7 @@ function CreateSubcategoryContent() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`https://desertsmarttourism.com/api/categories`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/categories`);
         const json = await res.json();
         if (json.success) setCategories(json.data);
       } catch (err) {
@@ -68,7 +68,7 @@ function CreateSubcategoryContent() {
   useEffect(() => {
     const fetchSubcategories = async () => {
       try {
-        const res = await fetch(`https://desertsmarttourism.com/api/subcategories`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories`);
         const json = await res.json();
         if (json.success) setAllSubcategories(json.data);
       } catch (err) {
@@ -83,7 +83,7 @@ function CreateSubcategoryContent() {
     if (!isEditing || !editId) return;
     const fetchSubcategory = async () => {
       try {
-        const res = await fetch(`https://desertsmarttourism.com/api/subcategories?id=${editId}`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories?id=${editId}`);
         const json = await res.json();
         if (json.success && json.data) {
           const sub = json.data;
@@ -158,7 +158,7 @@ function CreateSubcategoryContent() {
       if (image) data.append('image', image);
 
       const method = isEditing ? 'PUT' : 'POST';
-      const res = await fetch(`https://desertsmarttourism.com/api/subcategories`, {
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories`, {
         method,
         body: data,
       });

@@ -135,8 +135,8 @@ const secondCategoryPackageOrder = [
     const fetchData = async () => {
       try {
         const [categoriesRes, packagesRes] = await Promise.all([
-          fetch(`https://desertsmarttourism.com/api/categories`),
-          fetch(`https://desertsmarttourism.com/api/packages`)
+          fetch(`https://vantratours-swart.vercel.app/api/categories`),
+          fetch(`https://vantratours-swart.vercel.app/api/packages`)
         ]);
 
         const categoriesData = await categoriesRes.json();

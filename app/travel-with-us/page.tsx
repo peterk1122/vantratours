@@ -26,7 +26,7 @@ function TravelContent() {
         const query = categoryId ? `?category=${categoryId}` : '';
         
         // Fetch Packages
-        const packagesPromise = fetch(`https://desertsmarttourism.com/api/packages${query}`).then(res => res.json());
+        const packagesPromise = fetch(`https://vantratours-swart.vercel.app/api/packages${query}`).then(res => res.json());
         
         // Fetch Category Name if categoryId exists
         let categoryPromise: Promise<any> = Promise.resolve(null);
@@ -34,7 +34,7 @@ function TravelContent() {
             // Determine if passed ID is likely an ObjectId or Slug
             const isObjectId = /^[0-9a-fA-F]{24}$/.test(categoryId);
             const paramName = isObjectId ? 'id' : 'slug';
-            categoryPromise = fetch(`https://desertsmarttourism.com/api/categories?${paramName}=${categoryId}`).then(res => res.json());
+            categoryPromise = fetch(`https://vantratours-swart.vercel.app/api/categories?${paramName}=${categoryId}`).then(res => res.json());
         }
 
         const [packagesData, categoryData] = await Promise.all([packagesPromise, categoryPromise]);

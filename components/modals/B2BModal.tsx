@@ -32,7 +32,7 @@ const B2BModal: React.FC<B2BModalProps> = ({ isOpen, onClose }) => {
     setStatus('idle');
 
     try {
-      const res = await fetch(`https://desertsmarttourism.com/api/b2b`, {
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/b2b`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

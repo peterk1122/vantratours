@@ -71,7 +71,7 @@ const FALLBACK: HeaderData = {
 const isExternal = (href: string) => /^(https?:|mailto:|tel:|\/\/)/i.test(href);
 
 // Package pictures stored under /api/ are loaded from the main site, exactly like the homepage search box does.
-const IMAGE_HOST = 'https://desertsmarttourism.com';
+const IMAGE_HOST = 'https://vantratours-swart.vercel.app';
 const imageSrc = (img?: string) => (img && img.startsWith('/api/') ? `${IMAGE_HOST}${img}` : img || '');
 
 function SmartLink({

@@ -1,5 +1,5 @@
 const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://desertsmarttourism.com";
+  process.env.NEXT_PUBLIC_BASE_URL || "https://vantratours-swart.vercel.app";
 
 export default async function sitemap() {
   // ─── Static Pages ───────────────────────────────────────────────────────────

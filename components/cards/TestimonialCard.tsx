@@ -33,7 +33,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       <p className="text-gray-600 leading-relaxed mb-6 italic">&ldquo;{quote}&rdquo;</p>
       <div className="flex items-center gap-4">
         <div className="relative w-12 h-12 rounded-full overflow-hidden">
-          <Image src={image?.startsWith('/api/') ? `https://desertsmarttourism.com${image}` : image} alt={name} fill className="object-cover" unoptimized />
+          <Image src={image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${image}` : image} alt={name} fill className="object-cover" unoptimized />
         </div>
         <div>
           <h4 className="font-semibold text-dark">{name}</h4>

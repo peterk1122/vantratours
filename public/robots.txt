@@ -19,4 +19,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://desertsmarttourism.com/sitemap_index.xml
+Sitemap: https://vantratours-swart.vercel.app/sitemap_index.xml

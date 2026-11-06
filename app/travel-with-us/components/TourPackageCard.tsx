@@ -14,7 +14,7 @@ const TourPackageCard: React.FC<PackageCardProps> = ({ data, isHighlighted = fal
       {/* Image Container */}
       <div className="relative h-44 w-full overflow-hidden rounded-lg">
         <Image
-          src={data.image?.startsWith('/api/') ? `https://desertsmarttourism.com${data.image}` : data.image}
+          src={data.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${data.image}` : data.image}
           alt={data.imageAlt || data.city}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"

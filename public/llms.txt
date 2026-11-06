@@ -1,8 +1,8 @@
 # llms.txt 
-# https://desertsmarttourism.com
+# https://vantratours-swart.vercel.app
 
 site_name: Desert Smart Tourism
-site_url: https://desertsmarttourism.com
+site_url: https://vantratours-swart.vercel.app
 site_type: travel and tourism services
 
 description:
@@ -24,19 +24,19 @@ service_locations:
 - United Arab Emirates
 
 main_pages:
-https://desertsmarttourism.com/
-https://desertsmarttourism.com/city-tours-sightseeing
-https://desertsmarttourism.com/attractions-theme-parks
-https://desertsmarttourism.com/cruises-luxury-experiences
-https://desertsmarttourism.com/desert-safaris-adventures
+https://vantratours-swart.vercel.app/
+https://vantratours-swart.vercel.app/city-tours-sightseeing
+https://vantratours-swart.vercel.app/attractions-theme-parks
+https://vantratours-swart.vercel.app/cruises-luxury-experiences
+https://vantratours-swart.vercel.app/desert-safaris-adventures
 
 tour_pages:
-https://desertsmarttourism.com/tour-details/dubai-city-tour
-https://desertsmarttourism.com/tour-details/abu-dhabi-city-tour
-https://desertsmarttourism.com/tour-details/city-tour-ras-al-khaimah
-https://desertsmarttourism.com/tour-details/dubai-yacht-tour
-https://desertsmarttourism.com/tour-details/dhow-cruise-with-dinner
-https://desertsmarttourism.com/tour-details/Carnival-cruise-Dubai-booking
+https://vantratours-swart.vercel.app/tour-details/dubai-city-tour
+https://vantratours-swart.vercel.app/tour-details/abu-dhabi-city-tour
+https://vantratours-swart.vercel.app/tour-details/city-tour-ras-al-khaimah
+https://vantratours-swart.vercel.app/tour-details/dubai-yacht-tour
+https://vantratours-swart.vercel.app/tour-details/dhow-cruise-with-dinner
+https://vantratours-swart.vercel.app/tour-details/Carnival-cruise-Dubai-booking
 
 content_topics:
 - desert safari tours
@@ -55,10 +55,10 @@ content_types:
 
 brand:
 name: Desert Smart Tourism
-website: https://desertsmarttourism.com
+website: https://vantratours-swart.vercel.app
 
 sitemap:
-https://desertsmarttourism.com/sitemap_index.xml
+https://vantratours-swart.vercel.app/sitemap_index.xml
 
 contact:
-website: https://desertsmarttourism.com
+website: https://vantratours-swart.vercel.app

@@ -8,7 +8,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   
   try {
-    const res = await fetch(`https://desertsmarttourism.com/api/packages?slug=${slug}`);
+    const res = await fetch(`https://vantratours-swart.vercel.app/api/packages?slug=${slug}`);
     if (!res.ok) throw new Error('Failed to fetch');
     const json = await res.json();
     
