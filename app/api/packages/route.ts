@@ -8,8 +8,16 @@ import { writeFile } from 'fs/promises';
 import sharp from 'sharp';
 import { uploadImage } from '@/lib/file-upload';
 
+// CORS: public GET requests ko dusre domains (jaise vercel.app) se allow karta hai
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
 
-
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
+}
 
 export async function GET(request: Request) {
   try {
@@ -86,10 +94,13 @@ export async function GET(request: Request) {
       .populate('subcategory', 'name slug parent') // Populate subcategory name
       .sort({ createdAt: -1 });
 
-    return NextResponse.json({ success: true, data: packages });
+    return NextResponse.json({ success: true, data: packages }, { headers: corsHeaders });
   } catch (error) {
     console.error('Error fetching packages:', error);
-    return NextResponse.json({ success: false, error: 'Failed to fetch packages' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, error: 'Failed to fetch packages' },
+      { status: 500, headers: corsHeaders }
+    );
   }
 }
 
@@ -179,14 +190,6 @@ export async function PUT(request: Request) {
         } catch (e) {
             console.error("Error parsing existingGallery", e);
         }
-    } else {
-         // If not sent, maybe we shouldn't wipe it? 
-         // But usually if the frontend supports it, it sends the current state.
-         // If we strictly follow the form, if 'existingGallery' is missing, it means none?
-         // For safety, if the field is missing entirely, we might want to fetch existing?
-         // But let's assume frontend sends what it wants to keep.
-         // To be safe, let's fetch current if we are unsure, OR assume frontend sends `existingGallery`.
-         // We will update frontend to send `existingGallery`.
     }
 
     const galleryFiles = formData.getAll('gallery') as File[];
@@ -272,7 +275,6 @@ export async function POST(request: Request) {
       }
     }
 
-    // Create Slug
     // Parse Features
     const featuresJson = formData.get('features') as string;
     let features = [];
