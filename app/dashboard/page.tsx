@@ -27,7 +27,7 @@ export default function Dashboard() {
 
   const fetchBookings = async () => {
     try {
-        const res = await fetch(`https://desertsmarttourism.com/api/bookings`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/bookings`);
         const json = await res.json();
         if (json.success) {
             setBookings(json.data);
@@ -41,7 +41,7 @@ export default function Dashboard() {
 
   const fetchInquiries = async () => {
     try {
-        const res = await fetch(`https://desertsmarttourism.com/api/b2b`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/b2b`);
         const json = await res.json();
         if (json.success) {
             setInquiries(json.data);
@@ -80,7 +80,7 @@ export default function Dashboard() {
     data.append('image', file);
 
     try {
-      const res = await fetch(`https://desertsmarttourism.com/api/categories`, {
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/categories`, {
         method: 'POST',
         body: data,
       });

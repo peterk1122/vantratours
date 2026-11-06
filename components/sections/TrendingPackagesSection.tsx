@@ -12,7 +12,7 @@ const TrendingPackagesSection: React.FC = () => {
  useEffect(() => {
   const fetchPackages = async () => {
     try {
-      const res = await fetch(`https://desertsmarttourism.com/api/packages`);
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/packages`);
       const data = await res.json();
       
       if (data.success) {

@@ -23,7 +23,7 @@ export default function ReviewsSection({ packageId }: { packageId: string }) {
   const fetchReviews = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`https://desertsmarttourism.com/api/reviews?packageId=${packageId}`);
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/reviews?packageId=${packageId}`);
       const json = await res.json();
       if (json.success) {
         setReviews(json.data);
@@ -46,7 +46,7 @@ export default function ReviewsSection({ packageId }: { packageId: string }) {
     setSuccess('');
 
     try {
-      const res = await fetch(`https://desertsmarttourism.com/api/reviews`, {
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ packageId, rating, comment }),

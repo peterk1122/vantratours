@@ -23,7 +23,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
   return (
     <div className={`relative ${sizeClasses[size]} rounded-2xl overflow-hidden group cursor-pointer`}>
       <Image
-        src={image?.startsWith('/api/') ? `https://desertsmarttourism.com${image}` : image}
+        src={image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${image}` : image}
         alt={title}
         fill
         className="object-cover transition-transform duration-500 group-hover:scale-110"

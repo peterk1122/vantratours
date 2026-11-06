@@ -20,7 +20,7 @@ const ROUTE = '#f4553a';
 const GREEN = '#1a9b55';
 const PRICE_RED = '#d92d20';
 
-const API_HOST = 'https://desertsmarttourism.com';
+const API_HOST = 'https://vantratours-swart.vercel.app';
 const DEFAULT_CURRENCY = 'AED';
 const WHATSAPP = 'https://wa.me/971508778139';
 

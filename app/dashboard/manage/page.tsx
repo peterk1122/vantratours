@@ -24,15 +24,15 @@ export default function ManageContentPage() {
     setLoading(true);
     try {
       // includeAll=true so the dashboard also receives draft packages
-      const pkgRes = await fetch(`https://desertsmarttourism.com/api/packages?includeAll=true`);
+      const pkgRes = await fetch(`https://vantratours-swart.vercel.app/api/packages?includeAll=true`);
       const pkgJson = await pkgRes.json();
       if (pkgJson.success) setPackages(pkgJson.data);
 
-      const catRes = await fetch(`https://desertsmarttourism.com/api/categories`);
+      const catRes = await fetch(`https://vantratours-swart.vercel.app/api/categories`);
       const catJson = await catRes.json();
       if (catJson.success) setCategories(catJson.data);
 
-      const subcatRes = await fetch(`https://desertsmarttourism.com/api/subcategories`);
+      const subcatRes = await fetch(`https://vantratours-swart.vercel.app/api/subcategories`);
       const subcatJson = await subcatRes.json();
       if (subcatJson.success) setSubcategories(subcatJson.data);
     } catch (err) {
@@ -46,7 +46,7 @@ export default function ManageContentPage() {
     if (!confirm('Are you sure you want to delete this item? This action cannot be undone.')) return;
 
     try {
-      const res = await fetch(`https://desertsmarttourism.com/api/${type}?id=${id}`, { method: 'DELETE' });
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/${type}?id=${id}`, { method: 'DELETE' });
       const json = await res.json();
       if (json.success) {
         alert('Deleted successfully');
@@ -75,7 +75,7 @@ export default function ManageContentPage() {
       data.append('id', pkg._id);
       data.append('status', newStatus);
 
-      const res = await fetch(`https://desertsmarttourism.com/api/packages`, { method: 'PUT', body: data });
+      const res = await fetch(`https://vantratours-swart.vercel.app/api/packages`, { method: 'PUT', body: data });
       const json = await res.json();
       if (json.success) {
         setPackages((prev) => prev.map((p) => (p._id === pkg._id ? { ...p, status: newStatus } : p)));
@@ -186,7 +186,7 @@ export default function ManageContentPage() {
                       <tr key={pkg._id} className={`hover:bg-gray-50 ${isDraft(pkg) ? 'bg-amber-50/30' : ''}`}>
                         <td className="px-6 py-4">
                           <div className="relative w-16 h-12 rounded-md overflow-hidden bg-gray-100">
-                            {pkg.image && <Image src={pkg.image?.startsWith('/api/') ? `https://desertsmarttourism.com${pkg.image}` : pkg.image} alt={pkg.title} fill className="object-cover" />}
+                            {pkg.image && <Image src={pkg.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${pkg.image}` : pkg.image} alt={pkg.title} fill className="object-cover" />}
                           </div>
                         </td>
                         <td className="px-6 py-4 font-medium text-gray-900">{pkg.title}</td>
@@ -252,7 +252,7 @@ export default function ManageContentPage() {
                     <tr key={cat._id} className="hover:bg-gray-50">
                       <td className="px-6 py-4">
                          <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-100">
-                           {cat.image && <Image src={cat.image?.startsWith('/api/') ? `https://desertsmarttourism.com${cat.image}` : cat.image} alt={cat.name} fill className="object-cover" />}
+                           {cat.image && <Image src={cat.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${cat.image}` : cat.image} alt={cat.name} fill className="object-cover" />}
                          </div>
                       </td>
                       <td className="px-6 py-4 font-medium text-gray-900">{cat.name}</td>

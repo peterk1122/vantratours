@@ -74,7 +74,7 @@ export async function PUT(request: Request) {
         // Ensure dir exists (it should)
         const filepath = path.join(uploadDir, filename);
         await writeFile(filepath, compressedBuffer);
-        updateData.image = `https://desertsmarttourism.com/api/uploads/${filename}`;
+        updateData.image = `https://vantratours-swart.vercel.app/api/uploads/${filename}`;
     }
 
     const updatedCategory = await Category.findByIdAndUpdate(id, updateData, { new: true });
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
 
     await writeFile(filepath, compressedBuffer);
 
-    const imageUrl = `https://desertsmarttourism.com/api/uploads/${filename}`;
+    const imageUrl = `https://vantratours-swart.vercel.app/api/uploads/${filename}`;
 
     // Use a user-provided slug if given, otherwise auto-generate from the name
     const customSlug = formData.get('slug') as string;

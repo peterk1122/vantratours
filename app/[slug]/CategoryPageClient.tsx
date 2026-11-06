@@ -30,7 +30,7 @@ export default function CategoryPageClient({ slug, initialCategory }: CategoryPa
         let categoryId = initialCategory?._id;
 
         if (!categoryId) {
-          const categoryData = await fetch(`https://desertsmarttourism.com/api/categories?slug=${slug}`).then(res => res.json());
+          const categoryData = await fetch(`https://vantratours-swart.vercel.app/api/categories?slug=${slug}`).then(res => res.json());
           if (categoryData && categoryData.success && categoryData.data) {
             setHeaderTitle(categoryData.data.name);
             categoryId = categoryData.data._id;
@@ -39,7 +39,7 @@ export default function CategoryPageClient({ slug, initialCategory }: CategoryPa
         }
 
         if (categoryId) {
-          const packagesData = await fetch(`https://desertsmarttourism.com/api/packages?category=${categoryId}`).then(res => res.json());
+          const packagesData = await fetch(`https://vantratours-swart.vercel.app/api/packages?category=${categoryId}`).then(res => res.json());
           if (packagesData.success) {
             setPackages(packagesData.data.map((pkg: any) => ({
               id: pkg._id,
@@ -73,7 +73,7 @@ export default function CategoryPageClient({ slug, initialCategory }: CategoryPa
     const fetchSubcategories = async () => {
       try {
         if (!slug) return;
-        const res = await fetch(`https://desertsmarttourism.com/api/subcategories?category=${slug}&parent=null`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories?category=${slug}&parent=null`);
         const json = await res.json();
         if (json.success) setSubcategories(json.data);
       } catch (error) {

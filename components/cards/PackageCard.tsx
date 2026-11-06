@@ -34,7 +34,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
       {/* Image */}
       <div className="relative h-52 rounded-tr-2xl rounded-tl-2xl overflow-hidden shrink-0">
         <Image
-          src={image?.startsWith('/api/') ? `https://desertsmarttourism.com${image}` : image}
+          src={image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${image}` : image}
           alt={imageAlt || title}
           fill
           className="object-cover hover:scale-105 transition-transform duration-500"

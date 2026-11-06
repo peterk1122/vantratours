@@ -53,9 +53,9 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "name": "Desert Smart Tourism",
-              "image": "https://desertsmarttourism.com/_next/image?url=%2Fimages%2Flogo.webp&w=256&q=75",
+              "image": "https://vantratours-swart.vercel.app/_next/image?url=%2Fimages%2Flogo.webp&w=256&q=75",
               "@id": "",
-              "url": "https://desertsmarttourism.com",
+              "url": "https://vantratours-swart.vercel.app",
               "telephone": "+971 50 877 8139",
               "priceRange": "140-2200 AED",
               "address": {
@@ -88,7 +88,7 @@ export default function RootLayout({
                 "https://www.facebook.com/dsmartourism",
                 "https://www.youtube.com/@desertsmarttourismllc",
                 "https://www.instagram.com/dsmarttourism",
-                "https://desertsmarttourism.com/"
+                "https://vantratours-swart.vercel.app/"
               ]
             })
           }}

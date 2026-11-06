@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
   React.useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`https://desertsmarttourism.com/api/categories`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/categories`);
         const json = await res.json();
         if (json.success) {
           setCategories(json.data.slice(0, 5)); // Limit to first 5 for footer

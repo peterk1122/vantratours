@@ -13,7 +13,7 @@ export default function MyBookingsPage() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const res = await fetch(`https://desertsmarttourism.com/api/user/bookings`);
+        const res = await fetch(`https://vantratours-swart.vercel.app/api/user/bookings`);
         const data = await res.json();
 
         if (data.success) {
@@ -73,7 +73,7 @@ export default function MyBookingsPage() {
                 {booking.package?.image && (
                   <div className="w-full md:w-48 h-48 md:h-auto relative shrink-0">
                     <img
-                      src={booking.package.image?.startsWith('/api/') ? `https://desertsmarttourism.com${booking.package.image}` : booking.package.image}
+                      src={booking.package.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${booking.package.image}` : booking.package.image}
                       alt={booking.title}
                       className="w-full h-full object-cover"
                     />

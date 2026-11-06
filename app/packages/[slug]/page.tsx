@@ -55,7 +55,7 @@ export default async function PackageDetailsPage({ params }: { params: Promise<{
       {/* Hero Section */}
       <div className="relative h-[60vh] w-full">
          <Image 
-            src={pkg.image?.startsWith('/api/') ? `https://desertsmarttourism.com${pkg.image}` : pkg.image} 
+            src={pkg.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${pkg.image}` : pkg.image} 
             alt={pkg.title} 
             fill 
             className="object-cover"

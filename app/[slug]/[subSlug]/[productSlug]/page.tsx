@@ -63,7 +63,7 @@ export default function CityTourPage() {
     if (productSlug) {
         const fetchPackage = async () => {
             try {
-                const res = await fetch(`https://desertsmarttourism.com/api/packages?slug=${productSlug}`);
+                const res = await fetch(`https://vantratours-swart.vercel.app/api/packages?slug=${productSlug}`);
                 const json = await res.json();
                 if (json.success && json.data && json.data.length > 0) {
                      setPackageData(json.data[0]);
@@ -349,7 +349,7 @@ export default function CityTourPage() {
               
               <div className="relative hidden md:block h-72 mt-4">
                 <Image
-                  src={activeData.image?.startsWith('/api/') ? `https://desertsmarttourism.com${activeData.image}` : (activeData.image || "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800")}
+                  src={activeData.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${activeData.image}` : (activeData.image || "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800")}
                   alt={activeData.imageAlt || activeData.title || 'Travel decoration'}
                   fill
                   className="object-contain"
