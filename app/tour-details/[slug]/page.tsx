@@ -43,6 +43,8 @@ interface OptionView {
   child: number;
   infant: number;
   unit: number; // flat price used when pricingType is not "person"
+  minPax: number;
+  maxPax: number;
   currency: string;
   raw: any;
 }
@@ -100,9 +102,17 @@ const toHtml = (c: any): string => {
   return '';
 };
 const stripHtml = (s: string) => s.replace(/<[^>]*>?/gm, '');
-
+const num = (...vals: any[]): number => {
+  for (const v of vals) {
+    const n = Number(v);
+    if (Number.isFinite(n) && n > 0) return n;
+  }
+  return 0;
+};
 function normaliseOption(o: any, i: number, fallbackPrice: number): OptionView {
-  const adult = Number(o.adultPrice ?? o.pricePerPerson ?? o.price ?? fallbackPrice ?? 0);
+  const isGroup = o.pricingType === 'group';
+  const adult = num(o.adultPrice, o.pricePerPerson, o.price, fallbackPrice);
+  const group = num(o.groupPrice, o.price, o.pricePerPerson, o.adultPrice, fallbackPrice);
   return {
     key: String(o._id || o.id || i),
     title: o.title || `Option ${i + 1}`,
@@ -117,11 +127,13 @@ function normaliseOption(o: any, i: number, fallbackPrice: number): OptionView {
       : [],
     penalty: o.penalty,
     times: Array.isArray(o.timeSlots) ? o.timeSlots.map(slotLabel).filter(Boolean) : [],
-    pricingType: o.pricingType === 'group' ? 'group' : 'person',
+    pricingType: isGroup ? 'group' : 'person',
     adult,
-    child: Number(o.childPrice ?? adult),
-    infant: Number(o.infantPrice ?? 0),
-    unit: Number(o.price ?? o.pricePerPerson ?? o.adultPrice ?? 0),
+    child: num(o.childPrice, adult),
+    infant: Number(o.infantPrice) || 0,
+    unit: group,
+    minPax: Number(o.minPax) || 1,
+    maxPax: Number(o.maxPax) || 0,
     currency: o.currency || DEFAULT_CURRENCY,
     raw: o,
   };
@@ -457,10 +469,16 @@ export default function TourDetailsPage() {
     setAvailability('idle');
   };
 
+    // Group option: har maxPax guests par 1 gaadi/group
+  const vehiclesFor = (o: OptionView) =>
+    o.pricingType === 'group'
+      ? Math.max(1, o.maxPax > 0 ? Math.ceil((adults + children) / o.maxPax) : 1)
+      : 0;
+
   const totalFor = (o: OptionView) =>
     o.pricingType === 'person'
       ? adults * o.adult + children * o.child + infants * o.infant
-      : o.unit * Math.max(1, adults + children);
+      : o.unit * vehiclesFor(o);
 
   const travelersLabel = useMemo(() => {
     const parts = [`Adult x ${adults}`];
@@ -482,7 +500,7 @@ export default function TourDetailsPage() {
       date: fromISO(date),
       pricingType: o.pricingType as "person" | "group",
       guests: isPerson ? 0 : adults + children,
-      items: isPerson ? 0 : adults + children,
+      items: isPerson ? 0 : vehiclesFor(o),
       adults,
       children,
       infants,
@@ -828,8 +846,11 @@ export default function TourDetailsPage() {
                     {infants > 0 && <p>{infants} Infant × {money(o.infant)}</p>}
                   </>
                 ) : (
-                  <p>{Math.max(1, adults + children)} × {money(o.unit)}</p>
-                )}
+                                <>
+                                  <p>{vehiclesFor(o)} × {money(o.unit)} (per group)</p>
+                                  <p>{adults + children} guest{adults + children > 1 ? 's' : ''}{o.maxPax > 0 ? `, max ${o.maxPax} per group` : ''}</p>
+                                </>
+                              )}
               </div>
               <p className="text-[11px] text-gray-400">All taxes and fees included</p>
               <button
