@@ -64,7 +64,7 @@ function AddSubcategoryModal({
       data.append('parent', parent);
       data.append('description', description);
 
-      const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories`, {
+      const res = await fetch(`/api/subcategories`, {
         method: 'POST',
         body: data,
       });
@@ -202,7 +202,7 @@ function CreateCategoryContent() {
   const fetchSubcategories = async () => {
     if (!editId) return;
     try {
-      const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories?category=${editId}`);
+      const res = await fetch(`/api/subcategories?category=${editId}`);
       const json = await res.json();
       if (json.success) setSubcategories(json.data);
     } catch (error) {
@@ -218,7 +218,7 @@ function CreateCategoryContent() {
   const handleDeleteSubcategory = async (id: string) => {
     if (!confirm('Delete this subcategory? This cannot be undone.')) return;
     try {
-      const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories?id=${id}`, { method: 'DELETE' });
+      const res = await fetch(`/api/subcategories?id=${id}`, { method: 'DELETE' });
       const json = await res.json();
       if (json.success) {
         fetchSubcategories();
@@ -236,7 +236,7 @@ function CreateCategoryContent() {
     if (isEditing && editId) {
       const fetchCategory = async () => {
         try {
-          const res = await fetch(`https://vantratours-swart.vercel.app/api/categories?id=${editId}`);
+          const res = await fetch(`/api/categories?id=${editId}`);
           const json = await res.json();
           if (json.success && json.data) {
             setFormData({
@@ -294,7 +294,7 @@ function CreateCategoryContent() {
       if (image) data.append('image', image);
 
       const method = isEditing ? 'PUT' : 'POST';
-      const res = await fetch(`https://vantratours-swart.vercel.app/api/categories`, {
+      const res = await fetch(`/api/categories`, {
         method: method,
         body: data,
       });

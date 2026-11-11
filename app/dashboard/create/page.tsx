@@ -156,7 +156,7 @@ function CreatePackageContent() {
     // Fetch categories on mount
     const fetchCategories = async () => {
       try {
-        const res = await fetch(`https://vantratours-swart.vercel.app/api/categories`);
+        const res = await fetch(`/api/categories`);
         const data = await res.json();
         if (data.success) {
           setCategories(data.data);
@@ -170,7 +170,7 @@ function CreatePackageContent() {
     // Fetch all subcategories once — filtered client-side by the chosen category below
     const fetchSubcategories = async () => {
       try {
-        const res = await fetch(`https://vantratours-swart.vercel.app/api/subcategories`);
+        const res = await fetch(`/api/subcategories`);
         const data = await res.json();
         if (data.success) {
           setSubcategories(data.data);
@@ -189,7 +189,7 @@ function CreatePackageContent() {
     const fetchPackage = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`https://vantratours-swart.vercel.app/api/packages?id=${editId}`);
+        const res = await fetch(`/api/packages?id=${editId}`);
         const json = await res.json();
         if (json.success && json.data && json.data.length > 0) {
            const pkg = json.data[0]; // Since API returns array
@@ -550,7 +550,7 @@ function CreatePackageContent() {
       galleryFiles.forEach(file => data.append('gallery', file));
 
       const method = isEditing ? 'PUT' : 'POST';
-      const res = await fetch(`https://vantratours-swart.vercel.app/api/packages`, {
+      const res = await fetch(`/api/packages`, {
         method: method,
         body: data,
       });

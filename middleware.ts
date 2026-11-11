@@ -13,18 +13,21 @@ export async function middleware(request: NextRequest) {
     }
 
     try {
-      const secret = new TextEncoder().encode(JWT_SECRET);
-      const { payload } = await jwtVerify(token, secret);
+  const secret = new TextEncoder().encode(JWT_SECRET);
+  const { payload } = await jwtVerify(token, secret);
 
-      if (payload.role !== 'admin') {
-        return NextResponse.redirect(new URL('/', request.url));
-      }
+  console.log('JWT VERIFIED:', payload);
+  console.log('USER ROLE:', payload.role);
 
-      return NextResponse.next();
-    } catch (error) {
-      console.error('Middleware auth error:', error);
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+  if (payload.role !== 'admin') {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  return NextResponse.next();
+} catch (error) {
+  console.error('Middleware auth error:', error);
+  return NextResponse.redirect(new URL('/login', request.url));
+}
   }
 
   return NextResponse.next();
