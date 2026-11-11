@@ -20,12 +20,20 @@ const ROUTE = '#f4553a';
 const GREEN = '#1a9b55';
 const PRICE_RED = '#d92d20';
 
-const API_HOST = 'https://vantratours-swart.vercel.app';
+//const API_HOST = 'https://vantratours-swart.vercel.app';
 const DEFAULT_CURRENCY = 'AED';
 const WHATSAPP = 'https://wa.me/971508778139';
 
-const imageSrc = (img?: string) => (img && img.startsWith('/api/') ? `${API_HOST}${img}` : img || '');
+//const imageSrc = (img?: string) => (img && img.startsWith('/api/') ? `${API_HOST}${img}` : img || '');
+const imageSrc = (img?: string | null): string => {
+  if (!img) return '';
 
+  if (img.startsWith('http://') || img.startsWith('https://')) {
+    return img;
+  }
+
+  return img.startsWith('/') ? img : `/${img}`;
+};
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
@@ -381,39 +389,69 @@ export default function TourDetailsPage() {
   useClickOutside(calendarWrap, useCallback(() => setCalendarOpen(false), []));
 
   /* Tour data (same endpoint the old page used) */
-  useEffect(() => {
-    if (!slug) return;
-    let cancelled = false;
-    const load = async () => {
-      try {
-        const res = await fetch(`${API_HOST}/api/packages?slug=${slug}`);
-        const json = await res.json();
-        if (!cancelled && json.success && json.data && json.data.length > 0) setPkg(json.data[0]);
-      } catch (err) {
-        console.error('Failed to fetch package', err);
-      } finally {
-        if (!cancelled) setLoading(false);
+useEffect(() => {
+  if (!slug) return;
+
+  let cancelled = false;
+
+  const load = async () => {
+    try {
+      const res = await fetch('/api/packages', {
+  cache: 'no-store',
+});
+
+if (!res.ok) throw new Error('Failed to fetch related packages');
+
+const json = await res.json();
+
+      if (!cancelled && json.success && json.data?.length > 0) {
+        setPkg(json.data[0]);
+      } else if (!cancelled) {
+        setPkg(null);
       }
-    };
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, [slug]);
+    } catch (err) {
+      console.error('Failed to fetch local package:', err);
+      if (!cancelled) setPkg(null);
+    } finally {
+      if (!cancelled) setLoading(false);
+    }
+  };
+
+  load();
+
+  return () => {
+    cancelled = true;
+  };
+}, [slug]);
 
   /* Related tours */
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch(`${API_HOST}/api/packages`);
-        const json = await res.json();
-        if (json.success) setRelated((json.data || []).filter((p: Related) => p.slug !== slug).slice(0, 8));
-      } catch (e) {
-        console.error(e);
+useEffect(() => {
+  const load = async () => {
+    try {
+      const res = await fetch('/api/packages', {
+        cache: 'no-store',
+      });
+
+      if (!res.ok) {
+        throw new Error(`Related packages API failed: ${res.status}`);
       }
-    };
-    load();
-  }, [slug]);
+
+      const json = await res.json();
+
+      if (json.success) {
+        setRelated(
+          (json.data || [])
+            .filter((p: Related) => p.slug !== slug)
+            .slice(0, 8)
+        );
+      }
+    } catch (err) {
+      console.error('Failed to fetch local related tours:', err);
+    }
+  };
+
+  load();
+}, [slug]);
 
   /* Default date: tomorrow */
   useEffect(() => {
@@ -549,7 +587,13 @@ export default function TourDetailsPage() {
 
   /* ---------------- derived page data ---------------- */
   const galleryRaw: any[] = Array.isArray(pkg.gallery) && pkg.gallery.length ? pkg.gallery : pkg.image ? [pkg.image] : [];
-  const gallery = galleryRaw.map((g) => imageSrc(typeof g === 'string' ? g : g?.url || g?.src)).filter(Boolean);
+  //const gallery = galleryRaw.map((g) => imageSrc(typeof g === 'string' ? g : g?.url || g?.src)).filter(Boolean);
+  
+  const gallery = (galleryRaw || [])
+  .map((g: any) =>
+    imageSrc(typeof g === 'string' ? g : g?.url || g?.src)
+  )
+  .filter((url: string) => Boolean(url));
   const alts: string[] = Array.isArray(pkg.galleryAlts) ? pkg.galleryAlts : [];
 
   const features: { icon?: string; title: string; description?: string }[] =
@@ -999,7 +1043,11 @@ export default function TourDetailsPage() {
                       <div className="relative h-44 rounded-xl overflow-hidden bg-gray-200">
                         {p.image && (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img src={imageSrc(p.image)} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          <img
+  src={imageSrc(p.image)}
+  alt={p.title || 'Tour image'}
+  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+/>
                         )}
                       </div>
                       {p.location && <p className="mt-3 text-[10px] text-gray-500">{p.location}</p>}

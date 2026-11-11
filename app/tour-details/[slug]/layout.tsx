@@ -1,4 +1,7 @@
+
 import { Metadata } from 'next';
+import connectToDatabase from '@/lib/db';
+import Package from '@/models/Package';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -6,18 +9,24 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  
+
   try {
-    const res = await fetch(`https://vantratours-swart.vercel.app/api/packages?slug=${slug}`);
-    if (!res.ok) throw new Error('Failed to fetch');
-    const json = await res.json();
-    
-    if (json.success && json.data && json.data.length > 0) {
-      const activeData = json.data[0];
-      const cleanDescription = activeData.metaDescription || activeData.description?.replace(/<[^>]*>?/gm, '').substring(0, 160);
-      
+    await connectToDatabase();
+
+    const activeData = await Package.findOne({
+      slug,
+      status: 'published',
+    }).lean();
+
+    if (activeData) {
+      const cleanDescription =
+        activeData.metaDescription ||
+        activeData.description?.replace(/<[^>]*>?/gm, '').substring(0, 160) ||
+        '';
+
       return {
-        title: activeData.metaTitle || `${activeData.title} | Desert Smart Tourism`,
+        title: activeData.metaTitle ||
+          `${activeData.title} | Desert Smart Tourism`,
         description: cleanDescription,
         keywords: activeData.metaKeywords || '',
         openGraph: {
@@ -28,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       };
     }
   } catch (err) {
-    console.error("Failed to fetch package for metadata", err);
+    console.error('Failed to fetch local package metadata:', err);
   }
 
   return {
@@ -36,6 +45,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 }

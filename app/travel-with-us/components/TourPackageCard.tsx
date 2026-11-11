@@ -13,12 +13,18 @@ const TourPackageCard: React.FC<PackageCardProps> = ({ data, isHighlighted = fal
     <Link href={`/${data.categorySlug}/${data.subcategorySlug}/${data.slug}`} className={`group cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-lg rounded-xl p-2    'hover:bg-white'}`}>
       {/* Image Container */}
       <div className="relative h-44 w-full overflow-hidden rounded-lg">
-        <Image
+        {/* <Image
           src={data.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${data.image}` : data.image}
           alt={data.imageAlt || data.city}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+        /> */}
+        <Image
+  src={data.image || '/images/travel-with-us.svg'}
+  alt={data.imageAlt || data.city || 'Tour package'}
+  fill
+  className="object-cover"
+/>
         
         <div className="absolute top-2 left-2 bg-[#F85E46] text-white text-[9px] font-medium px-2 py-0.5 rounded">
           {data.date}
