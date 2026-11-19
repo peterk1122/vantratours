@@ -6,7 +6,7 @@ import CategoriesSection from '@/components/sections/CategoriesSection';
 import AttractionsSection from '@/components/sections/AttractionsSection';
 import TourRowSection from '@/components/sections/TourRowSection';
 import WhyBookSection from '@/components/sections/WhyBookSection';
-
+import HomeSections from '@/components/sections/HomeSections';
 export const metadata: Metadata = {
   title: 'Vantra Travel & Tourism | Experiences Worth Traveling For',
   description: 'Discover and book tours, attractions and activities with Vantra Travel & Tourism.',
@@ -19,6 +19,7 @@ export default function Home() {
       <HeroSection />
       <CategoriesSection />
       <AttractionsSection />
+      <HomeSections />
       <TourRowSection title="Go beyond the guidebook" section="guidebook" />
       <TourRowSection title="Adventures to plan your trip around" section="adventures" />
       <WhyBookSection />

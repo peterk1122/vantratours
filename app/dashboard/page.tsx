@@ -127,6 +127,9 @@ export default function Dashboard() {
               <Link href="/dashboard/offers" className="bg-[#181E4B] text-white px-4 py-2 rounded-lg hover:bg-[#12163a] transition">
               Manage Offers
               </Link>
+              <Link href="/dashboard/sections" className="bg-[#181E4B] text-white px-4 py-2 rounded-lg hover:bg-[#12163a] transition">
+                    Manage Sections
+                    </Link>
           </div>
       <div className="max-w-6xl mx-auto space-y-12">
         
