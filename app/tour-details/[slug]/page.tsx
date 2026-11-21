@@ -387,43 +387,42 @@ export default function TourDetailsPage() {
 
   useClickOutside(travelersWrap, useCallback(() => setTravelersOpen(false), []));
   useClickOutside(calendarWrap, useCallback(() => setCalendarOpen(false), []));
+  /* Tour data */
+  useEffect(() => {
+    if (!slug) return;
 
-  /* Tour data (same endpoint the old page used) */
-useEffect(() => {
-  if (!slug) return;
+    let cancelled = false;
 
-  let cancelled = false;
+    const load = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/packages?slug=${encodeURIComponent(slug)}`, {
+          cache: 'no-store',
+        });
 
-  const load = async () => {
-    try {
-      const res = await fetch('/api/packages', {
-  cache: 'no-store',
-});
+        if (!res.ok) throw new Error(`Package API failed: ${res.status}`);
 
-if (!res.ok) throw new Error('Failed to fetch related packages');
+        const json = await res.json();
 
-const json = await res.json();
-
-      if (!cancelled && json.success && json.data?.length > 0) {
-        setPkg(json.data[0]);
-      } else if (!cancelled) {
-        setPkg(null);
+        if (!cancelled && json.success && json.data?.length > 0) {
+          setPkg(json.data[0]);
+        } else if (!cancelled) {
+          setPkg(null);
+        }
+      } catch (err) {
+        console.error('Failed to fetch package:', err);
+        if (!cancelled) setPkg(null);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
-    } catch (err) {
-      console.error('Failed to fetch local package:', err);
-      if (!cancelled) setPkg(null);
-    } finally {
-      if (!cancelled) setLoading(false);
-    }
-  };
+    };
 
-  load();
+    load();
 
-  return () => {
-    cancelled = true;
-  };
-}, [slug]);
-
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
   /* Related tours */
 useEffect(() => {
   const load = async () => {
