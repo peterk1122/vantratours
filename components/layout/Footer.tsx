@@ -42,7 +42,7 @@ const companyLinks = [
 
 // Details shown under "Information". Change them here.
 const ADDRESS = 'Office ab Emirates';
-const EMAIL = 'infohttps://vantratours.com';
+const EMAIL = 'info@vantratours.com';
 const PHONE_DISPLAY = '+971554063113';
 const PHONE_LINK = '+971554063113';
 
