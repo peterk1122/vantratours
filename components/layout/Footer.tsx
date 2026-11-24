@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import B2BModal from '../modals/B2BModal';
 
@@ -33,40 +33,45 @@ const socialLinks = [
     path: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
   },
 ];
-
-// Links shown under "Company". Change the text or the page address here.
+// Links shown under "Company".
 const companyLinks = [
   { label: 'About Us', href: '/about' },
   { label: 'Blog', href: '/blog' },
 ];
 
-// Details shown under "Information". Change them here.
 const ADDRESS = 'Office ab Emirates';
 const EMAIL = 'info@vantratours.com';
 const PHONE_DISPLAY = '+971554063113';
 const PHONE_LINK = '+971554063113';
 
-// Picture of your accepted payment badges (export it from Figma and upload it to public/images).
 const PAYMENT_IMAGE = '/images/payment-methods.png';
 const FALLBACK_LOGO = '/images/logo.webp';
 
-const Footer: React.FC = () => {
-  const [logo, setLogo] = useState({ url: FALLBACK_LOGO, alt: 'Logo' });
-  const [showPayments, setShowPayments] = useState(true);
-  const [isB2BModalOpen, setIsB2BModalOpen] = useState(false);
+type Logo = { url: string; alt: string };
 
-  // The footer logo is the same logo you set in Dashboard > Header & Menu > Logo
+const Footer: React.FC = () => {
+  // null = abhi load ho raha hai (box reserved rehta hai, jump nahi hoga)
+  const [logo, setLogo] = useState<Logo | null>(null);
+  const [paymentFailed, setPaymentFailed] = useState(false);
+  const [isB2BModalOpen, setIsB2BModalOpen] = useState(false);
+  const paymentRef = useRef<HTMLImageElement>(null);
+
+  // Logo: API se lo, fail ho to fallback
   useEffect(() => {
     let cancelled = false;
     const loadLogo = async () => {
       try {
         const res = await fetch('/api/header-config', { cache: 'no-store' });
         const json = await res.json();
-        if (!cancelled && json.success && json.data?.logo?.url) {
+        if (cancelled) return;
+        if (json.success && json.data?.logo?.url) {
           setLogo({ url: json.data.logo.url, alt: json.data.logo.alt || 'Logo' });
+        } else {
+          setLogo({ url: FALLBACK_LOGO, alt: 'Logo' });
         }
       } catch (error) {
         console.error('Failed to load footer logo', error);
+        if (!cancelled) setLogo({ url: FALLBACK_LOGO, alt: 'Logo' });
       }
     };
     loadLogo();
@@ -75,19 +80,37 @@ const Footer: React.FC = () => {
     };
   }, []);
 
+  // Agar image hydration se pehle hi fail ho chuki ho to onError miss ho jata hai, isliye yahan check
+  useEffect(() => {
+    const img = paymentRef.current;
+    if (img && img.complete && img.naturalWidth === 0) {
+      setPaymentFailed(true);
+    }
+  }, []);
+
   return (
     <footer className="bg-[#9DBBE3] text-white">
       <B2BModal isOpen={isB2BModalOpen} onClose={() => setIsB2BModalOpen(false)} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-10">
-        <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
-          {/* Logo */}
-          <Link href="/" className="shrink-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={logo.url} alt={logo.alt} style={{ height: 64, width: 'auto' }} />
+        {/* Fixed 3-column grid: layout kabhi nahi hilega */}
+        <div className="grid grid-cols-1 gap-8 items-center justify-items-center md:grid-cols-3">
+          {/* Logo (fixed size box) */}
+          <Link
+            href="/"
+            className="flex h-16 w-48 items-center justify-center md:justify-start md:justify-self-start"
+          >
+            {logo && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logo.url}
+                alt={logo.alt}
+                className="h-16 w-auto max-w-full object-contain"
+              />
+            )}
           </Link>
 
           {/* Follow us */}
-          <div className="flex flex-col items-center md:items-start gap-3">
+          <div className="flex flex-col items-center gap-3">
             <span className="text-xs font-semibold">Follow Us:</span>
             <div className="flex items-center gap-3">
               {socialLinks.map((social) => (
@@ -107,16 +130,17 @@ const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Payment methods */}
-          {showPayments && (
-            // eslint-disable-next-line @next/next/no-img-element
+          {/* Payment methods: box hamesha rehta hai, sirf image hide hoti hai */}
+          <div className="flex h-8 items-center md:justify-self-end">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+              ref={paymentRef}
               src={PAYMENT_IMAGE}
               alt="Accepted payment methods"
-              className="h-8 w-auto"
-              onError={() => setShowPayments(false)}
+              className={`h-8 w-auto ${paymentFailed ? 'invisible' : ''}`}
+              onError={() => setPaymentFailed(true)}
             />
-          )}
+          </div>
         </div>
 
         {/* Company and Information */}
@@ -165,8 +189,6 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </div>
-
-
       </div>
     </footer>
   );
