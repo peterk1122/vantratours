@@ -166,9 +166,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <p className="mt-8 text-center text-xs">
-          © 2022 – {new Date().getFullYear()} . Made BY UM Web Firm.
-        </p>
+
       </div>
     </footer>
   );
