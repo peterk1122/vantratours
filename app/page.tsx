@@ -20,8 +20,6 @@ export default function Home() {
       <CategoriesSection />
       <AttractionsSection />
       <HomeSections />
-      <TourRowSection title="Go beyond the guidebook" section="guidebook" />
-      <TourRowSection title="Adventures to plan your trip around" section="adventures" />
       <WhyBookSection />
       <Footer />
     </main>
