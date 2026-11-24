@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import B2BModal from '../modals/B2BModal';
 
 // Replace each "#" with the real page address of your social account.
 // Delete a whole { ... } block to hide that icon.
@@ -33,6 +34,18 @@ const socialLinks = [
   },
 ];
 
+// Links shown under "Company". Change the text or the page address here.
+const companyLinks = [
+  { label: 'About Us', href: '/about' },
+  { label: 'Blog', href: '/blog' },
+];
+
+// Details shown under "Information". Change them here.
+const ADDRESS = 'Office ab Emirates';
+const EMAIL = 'infohttps://vantratours.com';
+const PHONE_DISPLAY = '+971554063113';
+const PHONE_LINK = '+971554063113';
+
 // Picture of your accepted payment badges (export it from Figma and upload it to public/images).
 const PAYMENT_IMAGE = '/images/payment-methods.png';
 const FALLBACK_LOGO = '/images/logo.webp';
@@ -40,6 +53,7 @@ const FALLBACK_LOGO = '/images/logo.webp';
 const Footer: React.FC = () => {
   const [logo, setLogo] = useState({ url: FALLBACK_LOGO, alt: 'Logo' });
   const [showPayments, setShowPayments] = useState(true);
+  const [isB2BModalOpen, setIsB2BModalOpen] = useState(false);
 
   // The footer logo is the same logo you set in Dashboard > Header & Menu > Logo
   useEffect(() => {
@@ -63,6 +77,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="bg-[#9DBBE3] text-white">
+      <B2BModal isOpen={isB2BModalOpen} onClose={() => setIsB2BModalOpen(false)} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-10">
         <div className="flex flex-col items-center gap-8 md:flex-row md:justify-between">
           {/* Logo */}
@@ -102,6 +117,53 @@ const Footer: React.FC = () => {
               onError={() => setShowPayments(false)}
             />
           )}
+        </div>
+
+        {/* Company and Information */}
+        <div className="mt-10 pt-8 border-t border-white/40 grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto sm:mx-0">
+          <div>
+            <h3 className="text-lg font-bold text-[#183B56] mb-4">Company</h3>
+            <ul className="space-y-3 text-sm">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} className="text-white hover:underline">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => setIsB2BModalOpen(true)}
+                  className="text-white hover:underline text-left"
+                >
+                  B2B Partnerships &amp; Collaborations
+                </button>
+              </li>
+              <li>
+                <Link href="/terms-and-conditions" className="text-white hover:underline">
+                  Terms and Conditions
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold text-[#183B56] mb-4">Information</h3>
+            <div className="space-y-3 text-sm">
+              <p className="text-white">{ADDRESS}</p>
+              <p>
+                <a href={`mailto:${EMAIL}`} className="text-white hover:underline break-all">
+                  {EMAIL}
+                </a>
+              </p>
+              <p>
+                <a href={`tel:${PHONE_LINK}`} className="text-white hover:underline">
+                  {PHONE_DISPLAY}
+                </a>
+              </p>
+            </div>
+          </div>
         </div>
 
         <p className="mt-8 text-center text-xs">
