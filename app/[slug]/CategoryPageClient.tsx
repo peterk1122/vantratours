@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
@@ -516,7 +515,7 @@ export default function CategoryPageClient({ slug, initialCategory }: CategoryPa
           className="relative w-full min-h-[190px] aspect-[2/1] sm:aspect-[3/1] md:aspect-[18/5] bg-cover bg-center overflow-hidden flex items-end justify-center md:pl-[14%] pb-6 md:pb-[6%]"
           style={{ backgroundImage: `url('${imageSrc(headerImage)}')` }}
         >
-          <h1 className={`${script.className} relative z-10 text-white text-center leading-none drop-shadow-md px-4 text-6xl sm:text-7xl md:text-8xl lg:text-[104px]`}>
+          <h1 className={`${script.className} relative z-10 text-white text-center leading-none drop-shadow-md px-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl`}>
             {headerTitle}
           </h1>
         </section>
