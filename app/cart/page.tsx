@@ -20,7 +20,18 @@ export default function CartPage() {
   const router = useRouter();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  
+
+  // ---- 5% VAT ----
+  // VAT is worked out to 2 decimals, so 2 AED gives 0.10 VAT and a 2.10 total.
+  // These VAT-inclusive items are what we send to the payment provider and save as bookings.
+  const itemsWithVat = items.map((item) => ({
+    ...item,
+    totalPrice: Math.round(item.totalPrice * 105) / 100,
+  }));
+  const totalWithVat = Math.round(itemsWithVat.reduce((sum, item) => sum + item.totalPrice, 0) * 100) / 100;
+  const vatAmount = Math.round((totalWithVat - cartTotal) * 100) / 100;
+  const formatAed = (n: number) => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
   const [buyerInfo, setBuyerInfo] = useState({
     firstName: '',
     lastName: '',
@@ -55,14 +66,14 @@ export default function CartPage() {
     setLoading(true);
 
     try {
-          const res = await fetch(`https://vantratours-swart.vercel.app/api/bookings`, {
+          const res = await fetch(`/api/bookings`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                  items,
+                  items: itemsWithVat,
                   buyerInfo,
                   paymentIntentId: 'pay_later_' + Date.now(), // Generate a placeholder ID
-                  totalAmount: cartTotal,
+                  totalAmount: totalWithVat,
                   paymentMethod: 'pay_later'
               })
           });
@@ -91,10 +102,10 @@ export default function CartPage() {
 
     // Create Payment Intent
     try {
-        const res = await fetch(`https://vantratours-swart.vercel.app/api/create-payment-intent`, {
+        const res = await fetch(`/api/create-payment-intent`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ items, amount: cartTotal }),
+            body: JSON.stringify({ items: itemsWithVat, amount: totalWithVat }),
         });
         const data = await res.json();
         if (data.clientSecret) {
@@ -111,14 +122,14 @@ export default function CartPage() {
   const handlePaymentSuccess = async (paymentIntentId: string) => {
       // Save order to database
       try {
-          const res = await fetch(`https://vantratours-swart.vercel.app/api/bookings`, {
+          const res = await fetch(`/api/bookings`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                  items,
+                  items: itemsWithVat,
                   buyerInfo,
                   paymentIntentId,
-                  totalAmount: cartTotal
+                  totalAmount: totalWithVat
               })
           });
           const json = await res.json();
@@ -211,9 +222,9 @@ export default function CartPage() {
                         </div>
                     </div>
 
-                    {items.some(item => item.pickupLocation) && (
+                    {(
                         <div className="mt-4">
-                            <label className="block text-xs font-semibold text-gray-500 mb-1">Pick Up Location</label>
+                            <label className="block text-xs font-semibold text-gray-500 mb-1">Pick Up Location <span className="text-gray-400 font-normal">(optional)</span></label>
                             <input type="text" name="pickupLocation" value={buyerInfo.pickupLocation} onChange={handleBuyerChange} placeholder="Enter your pick up address" className="w-full bg-gray-200 border-none rounded-md px-4 py-3 focus:ring-2 focus:ring-[#F85E46]" />
                         </div>
                     )}
@@ -230,7 +241,7 @@ export default function CartPage() {
                             <div className="flex gap-6">
                                 <div className="w-24 h-24 bg-gray-200 rounded-lg flex-shrink-0 relative overflow-hidden">
                                      {/* Placeholder image if none provided */}
-                                    <Image src={item.image?.startsWith('/api/') ? `https://vantratours-swart.vercel.app${item.image}` : (item.image || '/images/destination/d-1.jpg')} alt={item.title} fill className="object-cover" />
+                                    <Image src={item.image?.startsWith('/api/') ? `${item.image}` : (item.image || '/images/destination/d-1.jpg')} alt={item.title} fill className="object-cover" />
                                 </div>
                                 <div className="flex-1">
                                     <h3 className="font-bold text-gray-800 text-lg mb-1">{item.title}</h3>
@@ -288,12 +299,16 @@ export default function CartPage() {
 
                       <div className="border-t border-gray-400/30 pt-4 mb-4">
                           <div className="flex justify-between mb-2 text-sm">
-                              <span className="text-gray-600">Total Price</span>
-                              <span className="font-bold text-gray-900">{cartTotal.toLocaleString()} AED</span>
+                              <span className="text-gray-600">Subtotal</span>
+                              <span className="font-bold text-gray-900">{formatAed(cartTotal)} AED</span>
+                          </div>
+                          <div className="flex justify-between mb-2 text-sm">
+                              <span className="text-gray-600">VAT (5%)</span>
+                              <span className="font-bold text-gray-900">{formatAed(vatAmount)} AED</span>
                           </div>
                           <div className="flex justify-between text-lg">
                               <span className="font-bold text-gray-800">Total Payable</span>
-                              <span className="font-bold text-gray-900">{cartTotal.toLocaleString()} AED</span>
+                              <span className="font-bold text-gray-900">{formatAed(totalWithVat)} AED</span>
                           </div>
                       </div>
 
@@ -332,7 +347,7 @@ export default function CartPage() {
                       {paymentMethod === 'stripe' ? (
                           clientSecret ? (
                              <Elements options={options} stripe={stripePromise}>
-                                 <CheckoutForm amount={cartTotal} buyerInfo={buyerInfo} onSuccess={handlePaymentSuccess} />
+                                 <CheckoutForm amount={totalWithVat} buyerInfo={buyerInfo} onSuccess={handlePaymentSuccess} />
                              </Elements>
                           ) : (
                             items.length > 0 && (
