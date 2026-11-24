@@ -4,6 +4,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import TourCard from '@/components/cards/TourCard';
 import { API_BASE } from '@/lib/api';
 
+// Sections whose heading is listed here are shown FIRST, in this order.
+// Every other section keeps the normal order from the dashboard.
+// To change the order, edit this list (write the headings in small letters).
+const SHOW_FIRST = ['most popular', 'trending packages'];
+
+const priorityOf = (heading: string) => {
+  const index = SHOW_FIRST.indexOf((heading || '').trim().toLowerCase());
+  return index === -1 ? SHOW_FIRST.length : index;
+};
+
 function SectionSlider({ section }: { section: any }) {
   const ref = useRef<HTMLDivElement>(null);
   if (!section.packages?.length) return null;
@@ -47,7 +57,12 @@ const HomeSections: React.FC = () => {
   useEffect(() => {
     fetch(`${API_BASE}/api/sections?active=1`)
       .then((r) => r.json())
-      .then((d) => d.success && setSections(d.data))
+      .then((d) => {
+        if (!d.success) return;
+        // Array.sort keeps the original order for sections with the same priority
+        const sorted = [...d.data].sort((a: any, b: any) => priorityOf(a.heading) - priorityOf(b.heading));
+        setSections(sorted);
+      })
       .catch((e) => console.error(e));
   }, []);
 
