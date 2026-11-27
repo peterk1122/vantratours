@@ -28,7 +28,7 @@ const DUMMY_REVIEWS = [
     profile_photo_url: "https://randomuser.me/api/portraits/women/68.jpg",
     rating: 5,
     relative_time_description: "a month ago",
-    text: "Amazing experience! The ATV bikes were fun, and the dinner under the stars was delicious. The belly dance performance was captivating. Highly recommend Desert Smart Tourism!",
+    text: "Amazing experience! The ATV bikes were fun, and the dinner under the stars was delicious. The belly dance performance was captivating. Highly recommend Vantra Travel & Tourism!",
     time: Date.now() / 1000,
     author_url: "https://www.google.com/maps/contrib/100000000000000000003/reviews"
   }
