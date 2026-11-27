@@ -13,11 +13,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   const post = await Blog.findOne({ slug: params.slug });
 
   if (!post) {
-    return { title: 'Post Not Found | Desert Smart Tourism' };
+    return { title: 'Post Not Found | Vantra Travel & Tourism' };
   }
 
   return {
-    title: post.metaTitle || `${post.title} | Desert Smart Tourism`,
+    title: post.metaTitle || `${post.title} | Vantra Travel & Tourism`,
     description: post.metaDescription || post.excerpt,
   };
 }
@@ -60,7 +60,7 @@ export default async function BlogPostPage(props: { params: Promise<{ slug: stri
             {post.title}
           </h1>
           <div className="flex items-center justify-center gap-4 text-sm md:text-base font-light opacity-90">
-            <span>By {post.author || 'Desert Smart Tourism'}</span>
+            <span>By {post.author || 'Vantra Travel & Tourism'}</span>
             <span>•</span>
             <span>{new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric'})}</span>
           </div>
