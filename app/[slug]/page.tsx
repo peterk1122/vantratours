@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: category.metaTitle || `${category.name} | Desert Smart Tourism`,
+    title: category.metaTitle || `${category.name} | Vantra Travel & Tourism`,
     description: category.metaDescription || category.description,
     keywords: category.metaKeywords || '',
     openGraph: {
