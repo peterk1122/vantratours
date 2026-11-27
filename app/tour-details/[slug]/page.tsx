@@ -22,7 +22,7 @@ const PRICE_RED = '#d92d20';
 
 //const API_HOST = 'https://vantratours-swart.vercel.app';
 const DEFAULT_CURRENCY = 'AED';
-const WHATSAPP = 'https://wa.me/971508778139';
+const WHATSAPP = 'https://wa.me/971569578414';
 
 //const imageSrc = (img?: string) => (img && img.startsWith('/api/') ? `${API_HOST}${img}` : img || '');
 const imageSrc = (img?: string | null): string => {
