@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       excerpt,
       content,
       status,
-      author: author || 'Desert Smart Tourism',
+      author: author || 'Vantra Travel & Tourism',
       coverImage: coverImageUrl,
       tags,
       metaTitle,
