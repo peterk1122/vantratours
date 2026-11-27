@@ -106,7 +106,7 @@ const BlogClient = () => {
                   </div>
                   
                   <div className="mt-8 pt-8 border-t border-gray-100 flex items-center justify-between text-sm text-gray-400">
-                    <span className='font-medium text-[#DF6951]'>By {post.author || 'Desert Smart Tourism'}</span>
+                    <span className='font-medium text-[#DF6951]'>By {post.author || 'Vantra Travel & Tourism'}</span>
                     <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
