@@ -1,12 +1,12 @@
 # llms.txt 
 # https://vantratours-swart.vercel.app
 
-site_name: Desert Smart Tourism
+site_name: Vantra Travel & Tourism
 site_url: https://vantratours-swart.vercel.app
 site_type: travel and tourism services
 
 description:
-Desert Smart Tourism is a UAE-based travel company offering Dubai desert safari tours, city sightseeing tours, luxury yacht cruises, theme park tickets, and adventure experiences across Dubai, Abu Dhabi, and Ras Al Khaimah.
+Vantra Travel & Tourism is a UAE-based travel company offering Dubai desert safari tours, city sightseeing tours, luxury yacht cruises, theme park tickets, and adventure experiences across Dubai, Abu Dhabi, and Ras Al Khaimah.
 
 primary_services:
 - Dubai Desert Safari Tours
@@ -54,7 +54,7 @@ content_types:
 - adventure activities
 
 brand:
-name: Desert Smart Tourism
+name: Vantra Travel & Tourism
 website: https://vantratours-swart.vercel.app
 
 sitemap:
