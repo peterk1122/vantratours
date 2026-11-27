@@ -93,7 +93,7 @@ async function getOrCreateConfig() {
         enabled: true,
         messages: [{ text: 'Enjoy Family Holiday Packages with Flexible Payment Options', link: '' }],
       },
-      contact: { phone: '+971 50 877 8139' },
+      contact: { phone: '+971569578414' },
       menuItems: DEFAULT_MENU,
     });
   }
