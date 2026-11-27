@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const BASE_URL = 'https://desertsmarttourism.com';
+const BASE_URL = 'https://vantratours.com';
 const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads');
 
 if (!MONGODB_URI) {
