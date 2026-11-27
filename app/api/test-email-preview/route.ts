@@ -18,7 +18,7 @@ export async function GET() {
         firstName: "Peter",
         lastName: "Reid",
         email: "peter.reid209@googlemail.com",
-        phone: "+971 505,848,841",
+        phone: "+971569578414",
         pickupLocation: "Adagio premium west beach, palm"
     },
     paymentMethod: 'stripe'
