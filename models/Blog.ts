@@ -54,7 +54,7 @@ const BlogSchema: Schema<IBlog> = new Schema(
     },
     author: {
       type: String,
-      default: 'Desert Smart Tourism',
+      default: 'Vantra Travel & Tourism',
     },
     metaTitle: {
       type: String,
