@@ -604,7 +604,7 @@ export default function TourDetailsPage() {
                 {reviewCount > 0 && <a href="#reviews" className="underline text-gray-700">{reviewCount} reviews</a>}
               </span>
             )}
-            <span className="text-gray-500 text-xs">Activity provider: Desert Smart Tourism</span>
+            <span className="text-gray-500 text-xs">Activity provider: Vantra Travel & Tourism</span>
             <button
               type="button"
               className="sm:ml-auto flex items-center gap-1.5 text-sm font-semibold hover:underline"
