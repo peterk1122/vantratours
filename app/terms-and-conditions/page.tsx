@@ -22,7 +22,7 @@ export default function TermsPage() {
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold text-gray-800">General</h2>
           <p>
-            Desert Smart Tourism provides tour, travel, transportation, attraction tickets, 
+            Vantra Travel & Tourism provides tour, travel, transportation, attraction tickets, 
             and related tourism services in the United Arab Emirates. All bookings are 
             subject to availability and confirmation.
           </p>
@@ -43,7 +43,7 @@ export default function TermsPage() {
           <h2 className="text-2xl font-semibold text-gray-800">Pricing and Changes</h2>
           <p>
             Prices may change due to fuel costs, government fees, taxes, or operational reasons. 
-            Desert Smart Tourism reserves the right to amend itineraries, schedules, or vehicles 
+            Vantra Travel & Tourism reserves the right to amend itineraries, schedules, or vehicles 
             if required for safety or operational reasons.
           </p>
         </section>
@@ -73,7 +73,7 @@ export default function TermsPage() {
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold text-gray-800">Liability</h2>
           <p>
-            Desert Smart Tourism acts as an agent for hotels, transport providers, attraction 
+            Vantra Travel & Tourism acts as an agent for hotels, transport providers, attraction 
             operators, and other third parties. We are not liable for loss, injury, delay, 
             accident, or damage caused by factors beyond our control, including weather, 
             mechanical issues, or third party service providers.
@@ -84,7 +84,7 @@ export default function TermsPage() {
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold text-gray-800">Force Majeure</h2>
           <p>
-            Desert Smart Tourism shall not be held responsible for cancellations or changes 
+            Vantra Travel & Tourism shall not be held responsible for cancellations or changes 
             caused by events beyond our control such as natural disasters, government 
             restrictions, strikes, or emergencies.
           </p>
@@ -151,9 +151,9 @@ export default function TermsPage() {
             Certain tickets, attractions, private tours, and special event bookings may be non refundable once confirmed.
           </p>
 
-          <h2 className="text-2xl font-semibold text-gray-800 pt-4">Cancellation by Desert Smart Tourism</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 pt-4">Cancellation by Vantra Travel & Tourism</h2>
           <p>
-            If a service is canceled by Desert Smart Tourism due to operational reasons, weather conditions, or safety concerns, 
+            If a service is canceled by Vantra Travel & Tourism due to operational reasons, weather conditions, or safety concerns, 
             guests will be offered a full refund or alternative service.
           </p>
 
