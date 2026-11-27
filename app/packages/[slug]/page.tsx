@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const cleanDescription = pkg.metaDescription || pkg.description?.replace(/<[^>]*>?/gm, '').substring(0, 160);
 
   return {
-    title: pkg.metaTitle || `${pkg.title} | Desert Smart Tourism`,
+    title: pkg.metaTitle || `${pkg.title} | Vantra Travel & Tourism`,
     description: cleanDescription,
     keywords: pkg.metaKeywords || '',
     openGraph: {
