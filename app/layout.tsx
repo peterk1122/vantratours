@@ -56,7 +56,7 @@ export default function RootLayout({
               "image": "https://vantratours-swart.vercel.app/_next/image?url=%2Fimages%2Flogo.webp&w=256&q=75",
               "@id": "",
               "url": "https://vantratours-swart.vercel.app",
-              "telephone": "+971 50 877 8139",
+              "telephone": "+971569578414",
               "priceRange": "140-2200 AED",
               "address": {
                 "@type": "PostalAddress",
