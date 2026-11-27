@@ -39,14 +39,14 @@ export default function AboutClient() {
             <div className="w-full md:w-2/3 space-y-8">
                 <div>
                    <h2 className="text-3xl md:text-4xl font-bold text-[#1E3A5F] mb-6 font-serif">
-                     About Desert Smart Tourism
+                     About Vantra Travel & Tourism
                    </h2>
                    <div className="w-24 h-1 bg-[#F85E46] mb-8"></div>
                 </div>
 
                 <div className="text-base md:text-lg text-gray-700 leading-relaxed space-y-6">
                     <p>
-                    <span className="font-bold text-[#F85E46]">Desert Smart Tourism</span> is a trusted travel and tourism company based in the UAE, specializing in authentic desert experiences and carefully curated city tours.
+                    <span className="font-bold text-[#F85E46]">Vantra Travel & Tourism</span> is a trusted travel and tourism company based in the UAE, specializing in authentic desert experiences and carefully curated city tours.
                     </p>
 
                     <p>
@@ -62,11 +62,11 @@ export default function AboutClient() {
                     </div>
 
                     <p>
-                    At Desert Smart Tourism, we work closely with hotels, travel agencies, tour operators, and corporate partners to deliver flexible B2B solutions and competitive pricing.
+                    At Vantra Travel & Tourism, we work closely with hotels, travel agencies, tour operators, and corporate partners to deliver flexible B2B solutions and competitive pricing.
                     </p>
 
                     <p>
-                    With a strong local network, modern booking systems, and a customer-first approach, <span className="font-bold text-[#1E3A5F]">Desert Smart Tourism</span> is your smart choice for discovering the UAE’s desert and beyond.
+                    With a strong local network, modern booking systems, and a customer-first approach, <span className="font-bold text-[#1E3A5F]">Vantra Travel & Tourism</span> is your smart choice for discovering the UAE’s desert and beyond.
                     </p>
                 </div>
             </div>
