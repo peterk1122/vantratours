@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
       return {
         title: activeData.metaTitle ||
-          `${activeData.title} | Desert Smart Tourism`,
+          `${activeData.title} | Vantra Travel & Tourism`,
         description: cleanDescription,
         keywords: activeData.metaKeywords || '',
         openGraph: {
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: 'Tour Details | Desert Smart Tourism',
+    title: 'Tour Details | Vantra Travel & Tourism',
   };
 }
 
