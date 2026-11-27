@@ -534,7 +534,7 @@ export default function HeaderConfigPage() {
                 type="text"
                 value={config.contact.phone}
                 onChange={(e) => setContact({ phone: e.target.value })}
-                placeholder="+971 50 877 8139"
+                placeholder="+971569578414"
                 className={inputClass}
               />
             </Field>
@@ -543,7 +543,7 @@ export default function HeaderConfigPage() {
                 type="text"
                 value={config.contact.link}
                 onChange={(e) => setContact({ link: e.target.value })}
-                placeholder="https://wa.me/971508778139"
+                placeholder="https://wa.me/971569578414"
                 className={inputClass}
               />
             </Field>
