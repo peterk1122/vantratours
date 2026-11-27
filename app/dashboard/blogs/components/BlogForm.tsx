@@ -13,7 +13,7 @@ export default function BlogForm({ initialData = null, onSubmit, loading }: any)
     excerpt: initialData?.excerpt || '',
     content: initialData?.content || '',
     status: initialData?.status || 'draft',
-    author: initialData?.author || 'Desert Smart Tourism',
+    author: initialData?.author || 'Vantra Travel & Tourism',
     tags: initialData?.tags?.join(', ') || '',
     metaTitle: initialData?.metaTitle || '',
     metaDescription: initialData?.metaDescription || '',
