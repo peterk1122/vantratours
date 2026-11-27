@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'desertsmarttourism.com',
+        hostname: 'vantratours.com',
       },
       {
         protocol: 'https',
