@@ -8,7 +8,7 @@ const WhatsAppButton: React.FC = () => {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 font-sans">
       {/* WhatsApp Button */}
       <Link
-        href="https://wa.me/9715087"
+        href="https://wa.me/971569578414"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-2 px-4 py-2 bg-[#28D146] text-white rounded-full shadow-md hover:bg-[#22b33c] transition-all hover:scale-105 active:scale-95 focus:outline-none"
@@ -21,7 +21,7 @@ const WhatsAppButton: React.FC = () => {
 
       {/* Phone Call Button */}
       <Link
-        href="tel:+9715087813"
+        href="tel:+971569578414"
         className="flex items-center gap-2 px-4 py-2 bg-[#1871FF] text-white rounded-full shadow-md hover:bg-[#1565e6] transition-all hover:scale-105 active:scale-95 focus:outline-none"
         aria-label="Book On Phone Call"
       >
