@@ -236,7 +236,7 @@ export const sendB2BEmails = async (data: B2BInquiryData) => {
     try {
         console.log("sendB2BEmails called for:", data.businessEmail);
 
-        // --- Send Email to Owner (Info@desertsmarttourism.com) ---
+        // --- Send Email to Owner (info@vantratours.com) ---
         const ownerMailOptions = {
             from: `"Vantra Travel & Tourism System" <${process.env.SMTP_USER}>`,
             to: process.env.SMTP_USER,
