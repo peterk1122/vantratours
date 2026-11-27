@@ -16,8 +16,8 @@ const volkhov = Volkhov({
 });
 
 export const metadata: Metadata = {
-  title: "Desert Safari Deals in Dubai | Desert Smart Tourism",
-  description: "Book Dubai desert safari deals, including morning and evening desert safari with dinner, premium safari packages for a luxury experience ||  Desert Smart Tourism",
+  title: "Desert Safari Deals in Dubai | Vantra Travel & Tourism",
+  description: "Book Dubai desert safari deals, including morning and evening desert safari with dinner, premium safari packages for a luxury experience ||  Vantra Travel & Tourism",
   keywords: [
     "desert safari deals",
     "morning desert safari dubai",
@@ -52,7 +52,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              "name": "Desert Smart Tourism",
+              "name": "Vantra Travel & Tourism",
               "image": "https://vantratours-swart.vercel.app/_next/image?url=%2Fimages%2Flogo.webp&w=256&q=75",
               "@id": "",
               "url": "https://vantratours-swart.vercel.app",
