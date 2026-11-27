@@ -3,7 +3,7 @@ import BlogClient from './BlogClient';
 
 export const metadata: Metadata = {
   title: "Travel Journal & Blog | Vantra Travel and Tourisms",
-  description: "Discover stories, insights, and guides about UAE culture, desert safari adventures, and historical tours curated by Desert Smart Tourism.",
+  description: "Discover stories, insights, and guides about UAE culture, desert safari adventures, and historical tours curated by Vantra Travel & Tourism.",
 };
 
 export default function BlogPage() {
