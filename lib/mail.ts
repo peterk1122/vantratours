@@ -137,7 +137,7 @@ export const sendBookingConfirmation = async (bookings: BookingDetails[]) => {
     // --- Send Email to Customer ---
     const customerMailOptions = {
         // ... options
-      from: `"Desert Smart Tourism" <${process.env.SMTP_USER}>`,
+      from: `"Vantra Travel & Tourism" <${process.env.SMTP_USER}>`,
       to: buyer.email,
       subject: `Order confirmation No ${String(bookings[0]._id).substring(String(bookings[0]._id).length - 6).toUpperCase()}`,
       html: `
@@ -175,7 +175,7 @@ export const sendBookingConfirmation = async (bookings: BookingDetails[]) => {
           </div>
 
           <p style="margin-top: 40px; font-size: 12px; color: #999; text-align: center;">
-            Thank you for choosing Desert Smart Tourism!
+            Thank you for choosing Vantra Travel & Tourism!
           </p>
         </div>
       `,
@@ -188,7 +188,7 @@ export const sendBookingConfirmation = async (bookings: BookingDetails[]) => {
 
     // --- Send Email to Admin ---
     const adminMailOptions = {
-      from: `"Desert Smart Tourism System" <${process.env.SMTP_USER}>`,
+      from: `"Vantra Travel & Tourism System" <${process.env.SMTP_USER}>`,
       to: process.env.SMTP_USER, // Sending to admin (same email for now, or configurable)
       subject: `New Booking Received - ${paymentMethod}`,
       html: `
@@ -238,7 +238,7 @@ export const sendB2BEmails = async (data: B2BInquiryData) => {
 
         // --- Send Email to Owner (Info@desertsmarttourism.com) ---
         const ownerMailOptions = {
-            from: `"Desert Smart Tourism System" <${process.env.SMTP_USER}>`,
+            from: `"Vantra Travel & Tourism System" <${process.env.SMTP_USER}>`,
             to: process.env.SMTP_USER,
             subject: `New B2B Partnership Proposal - ${data.companyName}`,
             html: `
@@ -260,7 +260,7 @@ export const sendB2BEmails = async (data: B2BInquiryData) => {
 
         // --- Send Confirmation to Sender ---
         const senderMailOptions = {
-            from: `"Desert Smart Tourism" <${process.env.SMTP_USER}>`,
+            from: `"Vantra Travel & Tourism" <${process.env.SMTP_USER}>`,
             to: data.businessEmail,
             subject: `Received: Your B2B Partnership Proposal`,
             html: `
@@ -271,7 +271,7 @@ export const sendB2BEmails = async (data: B2BInquiryData) => {
                     
                     <p>Dear ${data.fullName},</p>
                     
-                    <p>Thank you for reaching out to Desert Smart Tourism! We have received your partnership proposal regarding <strong>${data.companyName}</strong>.</p>
+                    <p>Thank you for reaching out to Vantra Travel & Tourism! We have received your partnership proposal regarding <strong>${data.companyName}</strong>.</p>
                     
                     <p>Our team will review your message and get back to you shortly to discuss potential collaboration opportunities.</p>
                     
@@ -280,7 +280,7 @@ export const sendB2BEmails = async (data: B2BInquiryData) => {
                         <p style="margin-top: 5px; font-style: italic;">"${data.message}"</p>
                     </div>
 
-                    <p>Best regards,<br>The Desert Smart Tourism Team</p>
+                    <p>Best regards,<br>The Vantra Travel & Tourism Team</p>
                 </div>
             `,
         };
